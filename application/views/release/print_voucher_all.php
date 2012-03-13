@@ -66,7 +66,9 @@
                         <li>Untuk mencairkan voucher ini harus membawa identitas yg berlaku.</li>
 
                 </div>
+                <!--
                 <div class="span4"><img src="<?php echo $themes ?>img/logo-ciu-pcaero.png" alt="CIU - PC Aeor"></div>
+                -->
                 
             </div>
         </div>
