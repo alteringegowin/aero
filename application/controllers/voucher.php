@@ -44,7 +44,7 @@ class Voucher extends CI_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('voucher_type', 'Voucher Type', 'trim|required');
         $this->form_validation->set_rules('flight_number', 'Flight Number', 'trim|required');
-        $this->form_validation->set_rules('std', 'STD', 'trim|required');
+        $this->form_validation->set_rules('std', 'STD', 'trim|required|callback__selisih');
         $this->form_validation->set_rules('etd', 'ETD', 'trim|required');
         $this->form_validation->set_rules('departure_city', 'Departure City', 'trim|required');
         $this->form_validation->set_rules('arrival_city', 'Arrival City', 'trim|required');
@@ -202,6 +202,34 @@ class Voucher extends CI_Controller {
             $session['total'] = $i - 1;
             $this->session->set_userdata('statistic_upload', $session);
             return TRUE;
+        }
+    }
+
+    function _selisih() {
+        $std = $this->input->post('std');
+        $etd = $this->input->post('etd');
+
+        $a_std = explode(':', $std);
+        $a_etd = explode(':', $etd);
+
+        $std_jam = intval($a_std[0]);
+        $etd_jam = intval($a_etd[0]);
+        $std_menit = intval($a_std[1]);
+        $etd_menit = intval($a_etd[1]);
+
+        $total_etd = ($etd_jam * 60) + $etd_menit;
+        $total_std = ($std_jam * 60) + $std_menit;
+
+        $total = $total_etd - $total_std;
+
+        if ($total > (60 * 4)) {
+            $this->form_validation->set_message('_selisih', 'STD dan ETD Lebih Dari 4 jam');
+            return FALSE;
+        } elseif ($total < 1) {
+            $this->form_validation->set_message('_selisih', 'ETD lebih awal daripada STD');
+            return FALSE;
+        } else {
+            return true;
         }
     }
 
