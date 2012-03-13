@@ -25,16 +25,25 @@ class Document extends CI_Controller {
     }
 
     function index($offset=0) {
+        $this->session->set_userdata('back_url', current_url());
         $limit = 10;
         $vouchers = $this->voucher_model->get_voucher_by_airlines($this->airlines_id, $offset);
         $pagination = create_pagination('release/index', $vouchers['total'], $limit, 3);
+        $doc_upload_type = config_item('doc_upload_type');
+        $doc_upload_type_icon = config_item('doc_upload_type_icon');
+        $attachments = array();
+        foreach ($vouchers['data'] as $r) {
+            $attachments[$r->id] = $this->voucher_model->get_attachment($r->id);
+        }
 
+        $this->tpl['doc_upload_type'] = $doc_upload_type;
+        $this->tpl['doc_upload_type_icon'] = $doc_upload_type_icon;
         $this->tpl['vouchers'] = $vouchers;
+        $this->tpl['attachments'] = $attachments;
         $this->tpl['pagination'] = $pagination;
         $this->tpl['content'] = $this->load->view('document/index', $this->tpl, true);
         $this->load->view('body', $this->tpl);
     }
-
 
     function print_list($voucher_id) {
 
@@ -99,6 +108,9 @@ class Document extends CI_Controller {
                 $db['offline_mode'] = 0;
                 $this->db->insert('attachments', $db);
             }
+            if ($this->session->userdata('back_url')) {
+                redirect($this->session->userdata('back_url'));
+            }
             redirect('document/add/' . $voucher_id);
         }
 
@@ -147,7 +159,38 @@ class Document extends CI_Controller {
             $db['offline_mode'] = $this->input->post('status', 1);
             $this->db->insert('attachments', $db);
         }
-        echo 1;
+        if ($this->input->is_ajax_request()) {
+            echo 1;
+        } else {
+            if ($this->session->userdata('back_url')) {
+                redirect($this->session->userdata('back_url'));
+            }
+            redirect('document/add/' . $voucher_id);
+        }
+    }
+
+    function setting_offline($voucher_id, $type) {
+        $db['voucher_id'] = $voucher_id;
+        $db['attachment_type'] = $type;
+        $this->db->where($db);
+        $ada = $this->db->get('attachments')->row();
+        if ($ada) {
+            $db['offline_mode'] = 1;
+            $this->db->where('voucher_id', $voucher_id);
+            $this->db->where('attachment_type', $type);
+            $this->db->update('attachments', $db);
+        } else {
+            $db['offline_mode'] = 1;
+            $this->db->insert('attachments', $db);
+        }
+        if ($this->input->is_ajax_request()) {
+            echo 1;
+        } else {
+            if ($this->session->userdata('back_url')) {
+                redirect($this->session->userdata('back_url'));
+            }
+            redirect('document/add/' . $voucher_id);
+        }
     }
 
 }

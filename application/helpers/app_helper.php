@@ -206,3 +206,27 @@ function create_log($user_id, $text) {
     $ci = get_instance();
     $ci->db->insert('logs', $d);
 }
+
+function document_button_title($attachments, $r, $k) {
+    if (isset($attachments[$r->id][$k])) {
+        if ($attachments[$r->id][$k]->offline_mode) {
+            return 'via offline';
+        } else {
+            return 'via uploaded';
+        }
+    } else {
+        return 'not set';
+    }
+}
+
+function document_button_class($attachments, $r, $k) {
+    if (isset($attachments[$r->id][$k])) {
+        if ($attachments[$r->id][$k]->offline_mode) {
+            return 'warning';
+        } else {
+            return 'success';
+        }
+    } else {
+        return 'danger';
+    }
+}

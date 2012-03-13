@@ -4,67 +4,48 @@
         <hr/>
         <table class="table table-striped table-bordered table-condensed">
             <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
 
-                    <th colspan="3" style="text-align: center;border-bottom: solid 1px #ccc;">Total Pax</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                </tr>
                 <tr>
                     <th>Flight Number</th>
-                    <th>Date</th>
-                    <th>Departure</th>
-                    <th>Arrival</th>
-                    <th>Status</th>
-
-                    <th>STD</th>
-                    <th>ETD</th>
-                    <th>Reason</th>
-                    <th>Req Time</th>
-
-                    <th>Delay</th>
-                    <th>Transfer</th>
-                    <th>Canceled</th>
+                    <th>File</th>
                     <th>Req By</th>
-                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($vouchers['data'] as $r): ?>
                     <tr style="font-size: 11px">
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->flight_number) ?></td>
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->flight_date) ?></td>
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->departure_city) ?></td>
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->arrival_city) ?></td>
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->voucher_type) ?></td>
-
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->flight_std) ?></td>
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->flight_etd) ?></td>
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->delay_reason) ?></td>
-                        <td class="span1"><?php echo anchor('release/detail/' . $r->id, $r->voucher_created_at) ?></td>
-
-                        <td style="width:40px;text-align: center;"><?php echo anchor('document/detail/' . $r->id, $r->total_pax_delay) ?></td>
-                        <td style="width:40px;text-align: center;"><?php echo anchor('document/detail/' . $r->id, $r->total_pax_transfer) ?></td>
-                        <td style="width:40px;text-align: center;"><?php echo anchor('document/detail/' . $r->id, $r->total_pax_cancelled) ?></td>
-                        <td class="span1"><?php the_user($r->user_id) ?></td>
-                        <td class="span1">
-                            <a rel="tooltip" data-original-title="Document Upload" class="btn btn-small btn-info" href="<?php echo site_url('document/add/' . $r->id) ?>"><i class="icon-file icon-white"></i> </a>
+                        <td>
+                            <h4><?php echo anchor('release/detail/' . $r->id, $r->flight_number) ?></h4>
+                            <p>
+                                <small><?php echo $r->flight_date ?></small><br/> 
+                                <span class="label label-important"><?php echo $r->voucher_type ?></span> 
+                                <?php echo $r->departure_city ?> - <?php echo $r->arrival_city ?> / <?php echo $r->flight_std ?> - <?php echo $r->flight_etd ?>
+                            </p>
                         </td>
+                        <td >
+                            <?php foreach ($doc_upload_type as $k => $d): ?>
+                                <?php $class_btn = isset($attachments[$r->id][$k]) ? '#' : 'danger'; ?>
+                                <a rel="tooltip" 
+                                   data-original-title="<?php echo $d ?> <?php echo document_button_title($attachments, $r, $k) ?> " 
+                                   class="btn btn-small btn-<?php echo document_button_class($attachments, $r, $k) ?>" 
+                                   href="<?php echo site_url('document/upload/' . $r->id . '/' . $k) ?>"><i class="icon-file icon-<?php echo $doc_upload_type_icon[$k] ?>"></i> </a>
+                               <?php endforeach; ?>
+                        </td>
+                        <td class="span1"><?php the_user($r->user_id) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
         <?php echo $pagination ?>
     </div>
+</div>
 
+<div class="row">
+    <div class="span4">
+        <h6>Legenda:</h6>
+        <p><a class="btn btn-small btn-success" href="#">&nbsp;</a> = upload</p>
+        <p><a class="btn btn-small btn-warning" href="#">&nbsp;</a> = via offline</p>
+        <p><a class="btn btn-small btn-danger" href="#">&nbsp;</a> = not set</p>
+    </div>
 </div>
 

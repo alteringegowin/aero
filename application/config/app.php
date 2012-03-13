@@ -13,3 +13,11 @@ $config['doc_upload_type'][2] = 'manifest';
 $config['doc_upload_type'][3] = 'flight-movement';
 $config['doc_upload_type'][4] = 'tanda bukti pembagian voucher';
 $config['doc_upload_type'][5] = 'others';
+
+
+$config['doc_upload_type_icon'][0] = 'check';
+$config['doc_upload_type_icon'][1] = 'share';
+$config['doc_upload_type_icon'][2] = 'lock';
+$config['doc_upload_type_icon'][3] = 'plane';
+$config['doc_upload_type_icon'][4] = 'asterisk';
+$config['doc_upload_type_icon'][5] = 'inbox';
