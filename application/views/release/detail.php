@@ -4,8 +4,8 @@
 <div class="row">
     <div class="span4"><h3>Passanger Data</h3></div>
     <div class="span8" style="text-align: right">
-        <a class="btn btn-success" href="<?php echo site_url('release/import/' . $flight->id) ?>"><i class="icon-print icon-white"></i> Import/Entry Passengers Data</a>
-        <a target="_blank" class="btn btn-info" href="<?php echo site_url('release/print_list/' . $flight->id) ?>"><i class="icon-print icon-white"></i> Print This Page</a>
+        <a class="btn btn-success" href="<?php echo site_url('release/import/' . $flight->id) ?>"><i class="icon-user icon-white"></i> Import/Entry Passengers Data</a>
+        <a target="_blank" class="btn btn-info" href="<?php echo site_url('release/print_list/' . $flight->id) ?>"><i class="icon-list-alt icon-white"></i> Print This Page</a>
         <a data-toggle="modal" href="#myModal" class="btn btn-danger print-voucher"><i class="icon-print icon-white"></i> Print All Vouchers</a>
     </div>
 </div>
@@ -43,6 +43,10 @@
     <div class="span1">
         <h5>Delay</h5>
         <h6><?php echo $flight->total_pax_delay ?></h6>
+    </div>
+    <div class="span1">
+        <h5>Re-route</h5>
+        <h6><?php echo $flight->total_pax_reroute ?></h6>
     </div>
     <div class="span1">
         <h5>Transfer</h5>
