@@ -3,13 +3,15 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Voucher extends CI_Controller {
+class Voucher extends CI_Controller
+{
 
     protected $tpl;
     protected $voucher_id;
     protected $airlines_id;
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->tpl['themes'] = base_url('themes/bootstrap/') . '/';
         $this->load->helper('flight');
@@ -27,7 +29,8 @@ class Voucher extends CI_Controller {
         $this->breadcrumbs[] = anchor('dashboard', 'Dashboard');
     }
 
-    function index($offset=0) {
+    function index($offset=0)
+    {
 
         $limit = 10;
         $vouchers = $this->voucher_model->get_voucher_by_airlines($this->airlines_id, $offset);
@@ -39,7 +42,8 @@ class Voucher extends CI_Controller {
         $this->load->view('body', $this->tpl);
     }
 
-    function add() {
+    function add()
+    {
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->form_validation->set_rules('voucher_type', 'Voucher Type', 'trim|required');
@@ -53,10 +57,13 @@ class Voucher extends CI_Controller {
         $this->form_validation->set_rules('total_pax_cancel', 'Total Pax Cancel', 'trim|numeric');
         $this->form_validation->set_rules('total_pax_reroute', 'Total Pax Re-route', 'trim|numeric');
         $this->form_validation->set_rules('total_pax_transfer', 'Total Pax Transfer', 'trim|numeric');
-        //$this->form_validation->set_rules('userfile', 'Attachment', 'callback__attach_files');
+        $this->form_validation->set_rules('Telex', 'Attachment Telex', 'callback__attach_file_telex');
+        $this->form_validation->set_rules('manifest', 'Attachment Manifest', 'callback__attach_file_manifest');
+        $this->form_validation->set_rules('movement', 'Attachment Movement', 'callback__attach_file_movement');
 
         if ($this->form_validation->run()) {
             $post = $this->input->post(NULL, true);
+            $attachments = $this->session->userdata('attachments');
 
             $date = date('Y-m-d', strtotime($post['flight_date']));
             $dbflight['user_id'] = $this->session->userdata('user_id');
@@ -81,7 +88,19 @@ class Voucher extends CI_Controller {
             $this->voucher_model->create_voucher('transfer', element('total_pax_transfer', $post, 0), $post['flight_number'], $voucher_id);
             $this->voucher_model->create_voucher('reroute', element('total_pax_reroute', $post, 0), $post['flight_number'], $voucher_id);
             $this->voucher_model->create_voucher('cancelled', element('total_pax_cancel', $post, 0), $post['flight_number'], $voucher_id);
-            $this->session->unset_userdata('attachment_files');
+
+            //attachments
+            if ($attachments) {
+                foreach ($attachments as $k => $v) {
+                    $dbattach['voucher_id'] = $voucher_id;
+                    $dbattach['attachment_type'] = $k;
+                    $dbattach['attachment_file'] = $v;
+                    $dbattach['offline_mode'] = 0;
+                    $this->db->insert('attachments', $dbattach);
+                }
+            }
+
+            $this->session->unset_userdata('attachments');
 
             $log_text = anchor('ciu/detail/' . $voucher_id, ' request voucher ' . $post['flight_number']);
             $this->log_model->save_log(3, $this->session->userdata('user_id'), $log_text);
@@ -99,6 +118,7 @@ class Voucher extends CI_Controller {
             $ddbandara[$r->kode] = $r->kode;
         }
 
+        $this->session->unset_userdata('attachments');
         $this->tpl['reasons'] = range(0, 99);
         $this->tpl['jam'] = range(0, 24);
         $this->tpl['menit'] = range(0, 59);
@@ -107,13 +127,15 @@ class Voucher extends CI_Controller {
         $this->load->view('body', $this->tpl);
     }
 
-    function edit() {
+    function edit()
+    {
 
         $this->tpl['content'] = $this->load->view('flight/edit', $this->tpl, true);
         $this->load->view('body', $this->tpl);
     }
 
-    function import($flight_id) {
+    function import($flight_id)
+    {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('userfile2', 'File Upload', 'callback__upload_data');
         if ($this->form_validation->run()) {
@@ -137,20 +159,23 @@ class Voucher extends CI_Controller {
         $this->load->view('body', $this->tpl);
     }
 
-    function _attach_files() {
-        if ($_FILES['userfile']['name']) {
+    function _attach_file_telex()
+    {
+        if ($_FILES['telex']['name']) {
             $config['upload_path'] = './attachments/';
-            $config['allowed_types'] = 'xls|doc|xlsx|docx|pdf|jpg|png|gif|txt';
-            $config['max_size'] = '0';
+            $config['allowed_types'] = 'pdf|csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
+            $config['max_size'] = '2000';
 
             $this->load->library('upload', $config);
-            if (!$this->upload->do_upload()) {
-                $error = $this->upload->display_errors();
-                $this->form_validation->set_message('_attach_files', $error);
+            if (!$this->upload->do_upload('telex')) {
+                $error = 'Telex file Error:' . $this->upload->display_errors();
+                $this->form_validation->set_message('_attach_file_telex', $error);
                 return FALSE;
             } else {
+                $attachments = array();
                 $data = $this->upload->data();
-                $this->session->set_userdata('attachment_files', $data['file_name']);
+                $attachments[1] = $data['file_name'];
+                $this->session->set_userdata('attachments', $attachments);
                 return true;
             }
         } else {
@@ -158,56 +183,108 @@ class Voucher extends CI_Controller {
         }
     }
 
-    function _upload_data() {
-        $config['upload_path'] = './uploads/passanger/';
-        $config['allowed_types'] = 'csv';
-        $config['allowed_types'] = 'csv';
-        $config['max_size'] = '1000';
+    function _attach_files_manifest()
+    {
+        if ($_FILES['manifest']['name']) {
+            $config['upload_path'] = './attachments/';
+            $config['allowed_types'] = 'pdf|csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
+            $config['max_size'] = '2000';
 
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload()) {
-            $error = $this->upload->display_errors();
-            $this->form_validation->set_message('_upload_data', $error);
-            return FALSE;
-        } else {
-            $data = $this->upload->data();
-            $fopen = fopen($data['full_path'], 'r');
-            $i = 0;
-            $sudah_ada = 0;
-            $sukses = 0;
-            while (($data = fgetcsv($fopen, 1000, ";")) !== FALSE) {
-                if (count($data) == 7) {
-                    if ($i) {
-                        $this->db->where('passenger_ticket', $data[2]);
-                        $row = $this->db->get('vouchers')->row();
-                        if ($row) {
-                            $sudah_ada++;
-                        } else {
-                            $sukses++;
-                            $db['flight_id'] = $this->uri->segment(3, 0);
-                            $db['passenger_name'] = $data[1];
-                            $db['passenger_ticket'] = $data[2];
-                            $db['passenger_booking'] = $data[3];
-                            $db['passenger_fr'] = $data[4];
-                            $db['passenger_remark'] = $data[5];
-                            $db['passenger_date'] = $data[6];
-                            $this->db->where('voucher_code', $data[0]);
-                            $this->db->update('vouchers', $db);
-                        }
-                    }
-                }
-                $i++;
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('manifest')) {
+                $error = 'Manifest file Error:' . $this->upload->display_errors();
+                $this->form_validation->set_message('_attach_files_manifest', $error);
+                return FALSE;
+            } else {
+                $attachments = array();
+                $data = $this->upload->data();
+                $attachments[2] = $data['file_name'];
+                $this->session->set_userdata('attachments', $attachments);
+                return true;
             }
-            $session['sudah_ada'] = $sudah_ada;
-            $session['sukses'] = $sukses;
-            $session['total'] = $i - 1;
-            $this->session->set_userdata('statistic_upload', $session);
-            return TRUE;
+        } else {
+            return true;
         }
     }
 
-    function _selisih() {
+    function _attach_files_movement()
+    {
+        if ($_FILES['movement']['name']) {
+            $config['upload_path'] = './attachments/';
+            $config['allowed_types'] = 'pdf|csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
+            $config['max_size'] = '2000';
+
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('movement')) {
+                $error = 'Movement file Error:' . $this->upload->display_errors();
+                $this->form_validation->set_message('_attach_files_movement', $error);
+                return FALSE;
+            } else {
+                $attachments = array();
+                $data = $this->upload->data();
+                $attachments[3] = $data['file_name'];
+                $this->session->set_userdata('attachments', $attachments);
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    /*
+      function _upload_data() {
+      $config['upload_path'] = './uploads/passanger/';
+      $config['allowed_types'] = 'csv';
+      $config['allowed_types'] = 'csv';
+      $config['max_size'] = '1000';
+
+      $this->load->library('upload', $config);
+
+      if (!$this->upload->do_upload()) {
+      $error = $this->upload->display_errors();
+      $this->form_validation->set_message('_upload_data', $error);
+      return FALSE;
+      } else {
+      $data = $this->upload->data();
+      $fopen = fopen($data['full_path'], 'r');
+      $i = 0;
+      $sudah_ada = 0;
+      $sukses = 0;
+      while (($data = fgetcsv($fopen, 1000, ";")) !== FALSE) {
+      if (count($data) == 7) {
+      if ($i) {
+      $this->db->where('passenger_ticket', $data[2]);
+      $row = $this->db->get('vouchers')->row();
+      if ($row) {
+      $sudah_ada++;
+      } else {
+      $sukses++;
+      $db['flight_id'] = $this->uri->segment(3, 0);
+      $db['passenger_name'] = $data[1];
+      $db['passenger_ticket'] = $data[2];
+      $db['passenger_booking'] = $data[3];
+      $db['passenger_fr'] = $data[4];
+      $db['passenger_remark'] = $data[5];
+      $db['passenger_date'] = $data[6];
+      $this->db->where('voucher_code', $data[0]);
+      $this->db->update('vouchers', $db);
+      }
+      }
+      }
+      $i++;
+      }
+      $session['sudah_ada'] = $sudah_ada;
+      $session['sukses'] = $sukses;
+      $session['total'] = $i - 1;
+      $this->session->set_userdata('statistic_upload', $session);
+      return TRUE;
+      }
+      }
+     * 
+     */
+
+    function _selisih()
+    {
         $std = $this->input->post('std');
         $etd = $this->input->post('etd');
 
@@ -235,7 +312,8 @@ class Voucher extends CI_Controller {
         }
     }
 
-    function download($flight_id) {
+    function download($flight_id)
+    {
         $this->load->helper('download');
         $vouchers = $this->voucher_model->get_vouchers($flight_id);
         $str[] = 'VOUCHER;NAME;TICKET;BOOKING;FR;REMARK;DATE';

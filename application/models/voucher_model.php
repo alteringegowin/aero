@@ -44,7 +44,7 @@ class Voucher_Model extends CI_Model
                 $type_code = '02';
                 break;
             case 'reroute':
-                $type_code = '03';
+                $type_code = '04';
                 break;
             default:
             case 'cancelled':

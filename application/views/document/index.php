@@ -6,6 +6,7 @@
             <thead>
 
                 <tr>
+                    <th>Status</th>
                     <th>Flight Number</th>
                     <th>File</th>
                     <th>Req By</th>
@@ -14,12 +15,14 @@
             <tbody>
                 <?php foreach ($vouchers['data'] as $r): ?>
                     <tr style="font-size: 11px">
+                        <td class="span1"><?php echo the_request_status($r) ?></td>
                         <td>
-                            <h4><?php echo anchor('release/detail/' . $r->id, $r->flight_number) ?></h4>
+                            <h6><i class="icon-plane"></i> <?php echo anchor('release/detail/' . $r->id, $r->flight_number) ?></h6>
                             <p>
-                                <small><?php echo $r->flight_date ?></small><br/> 
-                                <span class="label label-important"><?php echo $r->voucher_type ?></span> 
-                                <?php echo $r->departure_city ?> - <?php echo $r->arrival_city ?> / <?php echo $r->flight_std ?> - <?php echo $r->flight_etd ?>
+                                <small>DATE: <?php echo date('l,j F Y', strtotime($r->flight_date)) ?></small><br/>
+                                <small>DEST: <?php echo $r->departure_city ?> - <?php echo $r->arrival_city ?></small><br/>
+                                <small>STD/ETD: <?php echo $r->flight_std ?> - <?php echo $r->flight_etd ?></small><br/>
+
                             </p>
                         </td>
                         <td >

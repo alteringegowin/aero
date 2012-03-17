@@ -94,20 +94,21 @@
         </div>
     </div>
     <hr/>
-    <?php
-    /*
-      <div class="row">
-      <div class="span8">
-      <label for="fileInput">Uploading File</label>
-      <input class="input-file" id="fileInput" name="userfile" type="file">
-      <p class="help-block">only supported xls, doc, xlsx, docx, pdf, jpg, png, gif, txt files</p>
-      </div>
-      <div class="span2">&nbsp;</div>
-      </div>
-      -->
+    <div class="row">
+        <div class="span4">
+            <label for="fileInput">Upload Telex File</label>
+            <input class="input-file" id="fileInput" name="telex" type="file">
+        </div>
+        <div class="span4">
+            <label for="fileInput">Upload Manifest</label>
+            <input class="input-file" id="fileInput2" name="manifest" type="file">
+        </div>
+        <div class="span4">
+            <label for="fileInput">Upload Movement</label>
+            <input class="input-file" id="fileInput3" name="movement" type="file">
+        </div>
+    </div>
 
-     */
-    ?>
     <div class="row">
         <div class="span12">
             <div class="form-actions" style="text-align: center">

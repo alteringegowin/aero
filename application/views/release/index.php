@@ -24,7 +24,7 @@
                 <?php foreach ($vouchers['data'] as $r): ?>
                     <tr>
 
-                        <td class="span1"><span class="label"><?php echo $r->voucher_type ?></span></td>
+                        <td class="span1"><?php echo the_request_status($r)?></td>
                         <td>
                             <h6><i class="icon-plane"></i> <?php echo anchor('release/detail/' . $r->id, $r->flight_number) ?></h6>
                             <p>

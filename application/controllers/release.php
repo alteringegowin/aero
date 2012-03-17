@@ -10,6 +10,7 @@ class Release extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->tpl['themes'] = base_url('themes/bootstrap/') . '/';
+        $this->load->helper('flight');
         $this->load->helper('release');
         $this->load->library('ion_auth');
         $login = $this->ion_auth->logged_in();
