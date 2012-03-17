@@ -1,3 +1,12 @@
+.label a{
+    color:white;
+    text-decoration: none;
+}
+.label a:hover{
+    color:white;
+    text-decoration: none;
+}
+
 #header {
     position: relative;
     background-color: white;
@@ -14,7 +23,7 @@
     background-color: none;
 }
 #header h1{
-    
+
 }
 .subnav {
     width: 100%;
@@ -32,7 +41,7 @@
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
-	*/
+    */
 }
 .subnav .nav {
     margin-bottom: 0;
@@ -46,15 +55,15 @@
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
-	-webkit-border-radius: 4px 4px 0 0px;
+    -webkit-border-radius: 4px 4px 0 0px;
     -moz-border-radius: 4px 4px 0 0px;
     border-radius: 4px 4px 0 0px;
-	background:#274a8d;
-	color:#ccc
+    background:#274a8d;
+    color:#ccc
 }
 .subnav .nav > li > a:hover {
-	background:#007abd;
-	color:#eee;
+    background:#007abd;
+    color:#eee;
 
 }
 
