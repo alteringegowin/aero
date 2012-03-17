@@ -129,9 +129,8 @@ class Document extends CI_Controller {
 
     function _upload_file() {
         $config['upload_path'] = './attachments/';
-        $config['allowed_types'] = 'csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
-        $config['allowed_types'] = 'csv';
-        $config['max_size'] = '1000';
+        $config['allowed_types'] = 'pdf|csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
+        $config['max_size'] = '2000';
         $this->load->library('upload', $config);
 
         if (!$this->upload->do_upload()) {
