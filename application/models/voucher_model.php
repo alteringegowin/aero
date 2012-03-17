@@ -25,6 +25,10 @@ class Voucher_Model extends CI_Model {
     }
 
     function create_voucher($type='', $total, $flight_number, $voucher_id) {
+        
+        $this->db->where('id',$voucher_id);
+        $master_voucher = $this->db->get('vouchers')->row();
+        
         $price = $this->get_default_price($type);
         $next_voucher = $this->get_next_voucher($flight_number);
         switch ($type) {
@@ -40,7 +44,7 @@ class Voucher_Model extends CI_Model {
                 break;
         }
 
-        $header = $flight_number . '-' . $type_code;
+        $header = $flight_number . '-' .$master_voucher->departure_city.'-'.$master_voucher->arrival_city.'-'. $type_code.$master_voucher->delay_reason;
         for ($i = 0; $i < $total; $i++) {
             $voucher_code = $header . '-' . sprintf("%012d", $next_voucher - 1);
             $dbvoucher['voucher_id'] = $voucher_id;
