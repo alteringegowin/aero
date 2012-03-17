@@ -10,34 +10,42 @@
         <table class="table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th>Voucher Type</th>
-                    <th>Date</th>
+                    <th>Status</th>
                     <th>Flight Number</th>
-                    <th>STD</th>
-                    <th>ETD</th>
-                    <th>Delay Reason</th>
-                    <th>Pax Delay</th>
-                    <th>Pax Transfer</th>
-                    <th>Pax Canceled</th>
+
+                    <th>Reason</th>
+                    <th>Req Time</th>
+
+                    <th>Delay</th>
+                    <th>Transfer</th>
+                    <th>Reroute</th>
+                    <th>Canceled</th>
+                    <th>Req By</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($vouchers['data'] as $r): ?>
                     <tr>
-                        <td class="span2"><?php echo $r->voucher_type ?></td>
-                        <td class="span2"><?php echo $r->flight_date ?></td>
-                        <td class="span4">
+
+                        <td class="span1"><?php echo the_request_status($r)?></td>
+                        <td>
+                            <h6><i class="icon-plane"></i> <?php echo anchor('release/detail/' . $r->id, $r->flight_number) ?></h6>
                             <p>
-                                <strong><?php echo $r->flight_number ?></strong><br/>
-                                <small><?php echo $r->departure_city ?> - <?php echo $r->arrival_city ?> </small>
+                                <small>DATE: <?php echo date('l,j F Y', strtotime($r->flight_date)) ?></small><br/>
+                                <small>DEST: <?php echo $r->departure_city ?> - <?php echo $r->arrival_city ?></small><br/>
+                                <small>STD/ETD: <?php echo $r->flight_std ?> - <?php echo $r->flight_etd ?></small><br/>
+
                             </p>
                         </td>
-                        <td style="width:10%;"><p><?php echo $r->flight_std ?></p></td>
-                        <td style="width:10%;"><p><?php echo $r->flight_etd ?></p></td>
-                        <td style="width:10%;"><p><?php echo $r->delay_reason ?></p></td>
-                        <td style="width:10%;"><p><?php echo $r->total_pax_delay ?></p></td>
-                        <td style="width:10%;"><p><?php echo $r->total_pax_transfer ?></p></td>
-                        <td style="width:10%;"><p><?php echo $r->total_pax_cancelled ?></p></td>
+
+                        <td style="width:120px;"><?php echo $r->delay_reason ?></td>
+                        <td style="width:120px;"><p><small><?php echo $r->voucher_created_at ?></small></td>
+
+                        <td style="width:40px;text-align: center;"><span class="badge badge-success"><?php echo $r->total_pax_delay ?></span></td>
+                        <td style="width:40px;text-align: center;"><span class="badge badge-warning"><?php echo $r->total_pax_transfer ?></span></td>
+                        <td style="width:40px;text-align: center;"><span class="badge badge-info"><?php echo $r->total_pax_reroute ?></span></td>
+                        <td style="width:40px;text-align: center;"><span class="badge badge-inverse"><?php echo $r->total_pax_cancelled ?></span></td>
+                        <td class="span1"><?php the_user($r->user_id) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

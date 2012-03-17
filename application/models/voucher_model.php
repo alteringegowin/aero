@@ -1,20 +1,24 @@
 <?php
 
-class Voucher_Model extends CI_Model {
+class Voucher_Model extends CI_Model
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
     }
 
-    protected function get_default_price($type) {
+    protected function get_default_price($type)
+    {
         $res = $this->db
-                ->get_where('configurations', array('param' => 'voucher_price_' . $type))
-                ->row();
+            ->get_where('configurations', array('param' => 'voucher_price_' . $type))
+            ->row();
         $price = isset($res->value) ? $res->value : 0;
         return $price;
     }
 
-    function get_next_voucher($flight_number) {
+    function get_next_voucher($flight_number)
+    {
         $this->db->select_max('next_voucher_key');
         $this->db->like('voucher_code', $flight_number);
         $this->db->order_by('id DESC');
@@ -24,11 +28,12 @@ class Voucher_Model extends CI_Model {
         return $next_voucer;
     }
 
-    function create_voucher($type='', $total, $flight_number, $voucher_id) {
-        
-        $this->db->where('id',$voucher_id);
+    function create_voucher($type='', $total, $flight_number, $voucher_id)
+    {
+
+        $this->db->where('id', $voucher_id);
         $master_voucher = $this->db->get('vouchers')->row();
-        
+
         $price = $this->get_default_price($type);
         $next_voucher = $this->get_next_voucher($flight_number);
         switch ($type) {
@@ -38,13 +43,16 @@ class Voucher_Model extends CI_Model {
             case 'transfer':
                 $type_code = '02';
                 break;
+            case 'reroute':
+                $type_code = '03';
+                break;
             default:
             case 'cancelled':
                 $type_code = '03';
                 break;
         }
 
-        $header = $flight_number . '-' .$master_voucher->departure_city.'-'.$master_voucher->arrival_city.'-'. $type_code.$master_voucher->delay_reason;
+        $header = $flight_number . '-' . $master_voucher->departure_city . '-' . $master_voucher->arrival_city . '-' . $type_code . $master_voucher->delay_reason;
         for ($i = 0; $i < $total; $i++) {
             $voucher_code = $header . '-' . sprintf("%012d", $next_voucher - 1);
             $dbvoucher['voucher_id'] = $voucher_id;
@@ -56,7 +64,8 @@ class Voucher_Model extends CI_Model {
         }
     }
 
-    function get($voucher_id) {
+    function get($voucher_id)
+    {
         $this->db->select('vouchers.*');
         $this->db->select('airlines.airlines_name');
         $this->db->select('users.fullname');
@@ -65,13 +74,15 @@ class Voucher_Model extends CI_Model {
         return $this->db->get_where('vouchers', array('vouchers.id' => $voucher_id))->row();
     }
 
-    function get_vouchers($voucher_id) {
+    function get_vouchers($voucher_id)
+    {
         $this->db->where('id', $voucher_id);
         $vouchers = $this->db->get('vouchers')->result();
         return $vouchers;
     }
 
-    function get_voucher_by_airlines($airlines_id, $offset=0, $limit=10) {
+    function get_voucher_by_airlines($airlines_id, $offset=0, $limit=10)
+    {
 
         $this->db->limit($limit, $offset);
         $this->db->where('airlines_id', $airlines_id);
@@ -84,7 +95,8 @@ class Voucher_Model extends CI_Model {
         return $res;
     }
 
-    function gets_all($offset=0, $limit=10) {
+    function gets_all($offset=0, $limit=10)
+    {
         $this->db->select('vouchers.*');
         $this->db->select('airlines.airlines_name');
         $this->db->join('airlines', 'airlines.id=vouchers.airlines_id', 'LEFT');
@@ -95,19 +107,22 @@ class Voucher_Model extends CI_Model {
         return $res;
     }
 
-    function read_voucher($voucher_id) {
+    function read_voucher($voucher_id)
+    {
         $d['voucher_status'] = 1;
         $this->db->where('id', $voucher_id);
         $this->db->update('vouchers', $d);
     }
 
-    function set_print_voucher($voucher_id) {
+    function set_print_voucher($voucher_id)
+    {
         $d['voucher_status'] = 2;
         $this->db->where('id', $voucher_id);
         $this->db->update('vouchers', $d);
     }
 
-    function get_attachment($voucher_id) {
+    function get_attachment($voucher_id)
+    {
         $r = $this->db->get_where('attachments', array('voucher_id' => $voucher_id))->result();
         $d = array();
         foreach ($r as $x) {

@@ -51,6 +51,7 @@ class Voucher extends CI_Controller {
         $this->form_validation->set_rules('delay_reason', 'Reason Of Delay', 'trim|required');
         $this->form_validation->set_rules('total_pax_delay', 'Total Pax Delay', 'trim|numeric');
         $this->form_validation->set_rules('total_pax_cancel', 'Total Pax Cancel', 'trim|numeric');
+        $this->form_validation->set_rules('total_pax_reroute', 'Total Pax Re-route', 'trim|numeric');
         $this->form_validation->set_rules('total_pax_transfer', 'Total Pax Transfer', 'trim|numeric');
         //$this->form_validation->set_rules('userfile', 'Attachment', 'callback__attach_files');
 
@@ -70,14 +71,15 @@ class Voucher extends CI_Controller {
             $dbflight['flight_etd'] = $post['etd'];
             $dbflight['total_pax_delay'] = element('total_pax_delay', $post, 0);
             $dbflight['total_pax_transfer'] = element('total_pax_transfer', $post, 0);
+            $dbflight['total_pax_reroute'] = element('total_pax_reroute', $post, 0);
             $dbflight['total_pax_cancelled'] = element('total_pax_cancel', $post, 0);
             $dbflight['voucher_created_at'] = date('Y-m-d H:i:s');
-            //$dbflight['attachment'] = $this->session->userdata('attachment_files');
             $this->db->insert('vouchers', $dbflight);
             $voucher_id = $this->db->insert_id();
 
             $this->voucher_model->create_voucher('delay', element('total_pax_delay', $post, 0), $post['flight_number'], $voucher_id);
             $this->voucher_model->create_voucher('transfer', element('total_pax_transfer', $post, 0), $post['flight_number'], $voucher_id);
+            $this->voucher_model->create_voucher('reroute', element('total_pax_reroute', $post, 0), $post['flight_number'], $voucher_id);
             $this->voucher_model->create_voucher('cancelled', element('total_pax_cancel', $post, 0), $post['flight_number'], $voucher_id);
             $this->session->unset_userdata('attachment_files');
 

@@ -1,21 +1,20 @@
 <?php
 
-function the_request_status($r) {
-    switch ($r->flight_status) {
+function the_request_status($r)
+{
+    switch ($r->voucher_type) {
         default:
-        case 0:
-            echo '<span class="label label-warning">waiting</span>';
+        case 'delay':
+            echo '<span class="label label-warning">'.anchor('release/detail/' . $r->id,'DELAY').'</span>';
             break;
-        case 1:
-            echo '<span class="label label-info">approved</span>';
-            break;
-        case 2:
-            echo '<span href="#" class="label label-warning">rejected</span>';
+        case 'cancelled':
+            echo '<span class="label label-info">'.anchor('release/detail/' . $r->id,'CANCELLED').'</span>';
             break;
     }
 }
 
-function the_request_option($r) {
+function the_request_option($r)
+{
     switch ($r->flight_status) {
         default:
         case 0:

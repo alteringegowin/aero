@@ -57,7 +57,13 @@
             </select>
         </div>
         <div class="span2">
-            <p class="help-block">All time is Asia/Jakarta Timezone (GMT +7)</p>
+            <label for="delay_reason">Reason Of Delay</label>
+            <select id="delay_reason" class="span1" name="delay_reason">
+                <option value="" disabled="disabled">Delay Reason</option>
+                <?php foreach ($reasons as $r): ?>
+                    <option><?php echo sprintf("%02d", $r) ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
     </div>
     <hr/>
@@ -71,22 +77,16 @@
             <?php echo form_dropdown('arrival_city', $ddbandara, set_value('arrival_city'), 'class="span2"') ?>
         </div>
         <div class="span2">
-            <label for="delay_reason">Reason Of Delay</label>
-            <select id="delay_reason" class="span1" name="delay_reason">
-                <option value="" disabled="disabled">Delay Reason</option>
-                <?php foreach ($reasons as $r): ?>
-                    <option><?php echo sprintf("%02d", $r) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-        <div class="span2">
             <label for="total_pax_delay">Total Pax Delay</label>
             <input type="text" class="span1" id="total_pax_delay" name="total_pax_delay"  value="<?php echo set_value('total_pax_delay'); ?>" >
         </div>
         <div class="span2">
             <label for="total_pax_transfer">Total Pax Transfer</label>
             <input type="text" class="span1" id="total_pax_transfer" name="total_pax_transfer"  value="<?php echo set_value('total_pax_delay'); ?>" >
+        </div>
+        <div class="span2">
+            <label for="total_pax_cancel">Total Re-route</label>
+            <input type="text" class="span1 disabled" id="total_pax_reroute" name="total_pax_reroute"  value="<?php echo set_value('total_pax_reroute'); ?>" >
         </div>
         <div class="span2">
             <label for="total_pax_cancel">Total Pax Flight Canceled</label>
