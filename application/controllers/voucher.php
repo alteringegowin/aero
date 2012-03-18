@@ -119,7 +119,15 @@ class Voucher extends CI_Controller
         }
 
         $this->session->unset_userdata('attachments');
-        $this->tpl['reasons'] = range(0, 99);
+
+        $this->db->order_by('code');
+        $codes = $this->db->get('delay_codes')->result();
+        $ddDelay = array();
+        foreach ($codes as $c) {
+            $ddDelay[$c->code] = $c->code . ' -' . $c->note;
+        }
+
+        $this->tpl['ddDelay'] = $ddDelay;
         $this->tpl['jam'] = range(0, 24);
         $this->tpl['menit'] = range(0, 59);
         $this->tpl['ddbandara'] = $ddbandara;

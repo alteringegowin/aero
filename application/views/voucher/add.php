@@ -58,12 +58,7 @@
         </div>
         <div class="span2">
             <label for="delay_reason">Reason Of Delay</label>
-            <select id="delay_reason" class="span1" name="delay_reason">
-                <option value="" disabled="disabled">Delay Reason</option>
-                <?php foreach ($reasons as $r): ?>
-                    <option><?php echo sprintf("%02d", $r) ?></option>
-                <?php endforeach; ?>
-            </select>
+            <?php echo form_dropdown('delay_reason', $ddDelay, set_value('delay_reason')) ?>
         </div>
     </div>
     <hr/>

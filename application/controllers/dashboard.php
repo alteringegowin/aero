@@ -17,8 +17,7 @@ class Dashboard extends CI_Controller {
         if (!$login) {
             redirect('login');
         }
-
-
+        
         $this->group = $this->session->userdata('group');
         $this->load->helper('flight');
         $this->tpl['themes'] = base_url('themes/bootstrap/') . '/';
