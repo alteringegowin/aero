@@ -28,35 +28,46 @@ if (!defined('BASEPATH'))
  * @since		Version 1.0
  * @filesource
  */
-class Welcome extends CI_Controller {
+class Welcome extends CI_Controller
+{
 
-    public function index() {
-        $row = 1;
-        if (($handle = fopen("data.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                if (count($data) == 2) {
-                    $s = explode('-', $data[0]);
-                    $db = array();
-                    if (strlen(trim($s[0])) == 3) {
-                        $this->db->where('kode', trim($s[0]));
-                        $row = $this->db->get('bandara')->result();
-
-                        $db['kode'] = trim($s[0]);
-                        $db['bandara'] = trim($s[1] . ' ' . $data[1]);
-                        if ($row) {
-
-                            $this->db->where('kode', trim($s[0]));
-                            $this->db->update('bandara', $db);
-                        } else {
-                            $db['kode'] = trim($s[0]);
-                            $db['bandara'] = trim($s[1] . ' ' . $data[1]);
-                            $this->db->insert('bandara', $db);
-                        }
-                    }
-                }
+    public function delay()
+    {
+        $this->load->helper('array');
+        $row = array();
+        if (($handle = fopen("delay.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                $row[$data[0]] = $data[1];
             }
             fclose($handle);
         }
+
+        for ($i = 0; $i < 100; $i++) {
+            $d['code'] = sprintf("%02d", $i);
+            $d['note'] = element($i, $row, '');
+            $this->db->insert('delay_codes', $d);
+        }
+    }
+
+    function adduser()
+    {
+        //garuda12
+        //express12
+        //airasia12
+//        $this->load->library('ion_auth');
+//        $user_id = $this->ion_auth->register('sky1', 'sky12', 'sky1@gmail.com', array(), array(2));
+//
+//        $db['airlines_id'] = 5;
+//        $db['user_id'] = $user_id;
+//        $this->db->insert('airlines_users',$db);
+//        
+//        $user_id = $this->ion_auth->register('sky2', 'sky12', 'sky2@gmail.com', array(), array(2));
+//        $db['airlines_id'] = 5;
+//        $db['user_id'] = $user_id;
+//        $this->db->insert('airlines_users',$db);
+//        
+        $this->load->library('ion_auth');
+        $user_id = $this->ion_auth->register('ciu', 'ciupassword', 'ciu@gmail.com', array(), array(3));
     }
 
 }
