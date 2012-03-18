@@ -1,10 +1,12 @@
 <?php
 
-function xdebug($var) {
+function xdebug($var)
+{
     echo '<pre>' . print_r($var, 1) . '</pre>';
 }
 
-function create_pagination($segment, $total, $limit, $uri_segment) {
+function create_pagination($segment, $total, $limit, $uri_segment)
+{
     $CI = & get_instance();
     $CI->load->library('pagination');
     /*
@@ -49,13 +51,15 @@ function create_pagination($segment, $total, $limit, $uri_segment) {
     return $CI->pagination->create_links();
 }
 
-function get_current_class($match, $segment=1) {
+function get_current_class($match, $segment=1)
+{
     $ci = & get_instance();
     $segment = $ci->uri->segment($segment, 'home');
     return $segment == $match ? 'active' : '';
 }
 
-function get_slug($title, $table, $field) {
+function get_slug($title, $table, $field)
+{
     $ci = & get_instance();
     $title = strtolower($title);
     $url_title = url_title($title);
@@ -79,13 +83,15 @@ function get_slug($title, $table, $field) {
  * @param type $string
  * @param type $array 
  */
-function wp_parse_str($string, &$array) {
+function wp_parse_str($string, &$array)
+{
     parse_str($string, $array);
     if (get_magic_quotes_gpc())
         $array = stripslashes_deep($array);
 }
 
-function wp_parse_args($args, $defaults = '') {
+function wp_parse_args($args, $defaults = '')
+{
     if (is_object($args))
         $r = get_object_vars($args);
     elseif (is_array($args))
@@ -98,7 +104,8 @@ function wp_parse_args($args, $defaults = '') {
     return $r;
 }
 
-function the_breadcrumbs($breadcrumbs = array(), $divider='&raquo;') {
+function the_breadcrumbs($breadcrumbs = array(), $divider='&raquo;')
+{
     $total = count($breadcrumbs);
     $str = '<ul class="breadcrumb">';
     for ($i = 0; $i < $total; $i++) {
@@ -118,7 +125,8 @@ function the_breadcrumbs($breadcrumbs = array(), $divider='&raquo;') {
     echo $str;
 }
 
-function the_dd_tanggal($def='') {
+function the_dd_tanggal($def='')
+{
 
     $def = set_value('tanggal');
     $options[''] = 'Date';
@@ -128,7 +136,8 @@ function the_dd_tanggal($def='') {
     echo form_dropdown('tanggal', $options, $def, 'class="span1" placeholder=".span1"');
 }
 
-function the_dd_bulan($def='') {
+function the_dd_bulan($def='')
+{
 
     $def = set_value('bulan');
     $options[''] = 'Month';
@@ -147,7 +156,8 @@ function the_dd_bulan($def='') {
     echo form_dropdown('bulan', $options, $def, 'class="span2"');
 }
 
-function the_dd_tahun($def='') {
+function the_dd_tahun($def='')
+{
     $def = set_value('tahun');
     $options[''] = 'Year';
     $tahun = date('Y');
@@ -157,18 +167,21 @@ function the_dd_tahun($def='') {
     echo form_dropdown('tahun', $options, $def, 'class="span1"');
 }
 
-function generate_param_insert($param='db') {
+function generate_param_insert($param='db')
+{
     
 }
 
-function generate_param_validation() {
+function generate_param_validation()
+{
     $post = $this->input->post(NULL, true);
     foreach ($post as $k => $v) {
         echo '$this->form_validation->set_rules(\'' . $k . '\', \'' . humanize($k) . '\', \'trim|required\')';
     }
 }
 
-function the_voucher($r, $id, $return=false) {
+function the_voucher($r, $id, $return=false)
+{
     $str = sprintf($r . "-%08d", $id);
     if ($return) {
         return $str;
@@ -177,29 +190,34 @@ function the_voucher($r, $id, $return=false) {
     }
 }
 
-function the_print($link) {
+function the_print($link)
+{
     echo '<a rel="tooltip" data-original-title="print this voucher" class="btn btn-small" href="javascript:void(0);" onclick="window.open(\'' . $link . '\', \'_blank\');"><i class="icon-print"></i></a>';
 }
 
-function the_delete_passanger($link) {
+function the_delete_passanger($link)
+{
     echo '<a rel="tooltip" data-original-title="delete this voucher" class="btn btn-small btn-danger deleteButton" href="' . $link . '" onclick="return confirm(\'Are You Sure?\')"><i class="icon-remove-sign icon-white"></i></a>';
 }
 
-function the_user($id) {
+function the_user($id)
+{
     $ci = get_instance();
     $ci->load->library('ion_auth');
     $r = $ci->ion_auth->user($id);
     echo $r->row()->fullname;
 }
 
-function the_airlines($airlines_id) {
+function the_airlines($airlines_id)
+{
 
     $ci = get_instance();
     $row = $ci->db->get_where('airlines', array('id' => $airlines_id))->row();
     echo isset($row->airlines_name) ? $row->airlines_name : '-';
 }
 
-function create_log($user_id, $text) {
+function create_log($user_id, $text)
+{
     $d['user_id'] = $user_id;
     $d['created_at'] = date('Y-m-d H:i:s');
     $d['log_text'] = $text;
@@ -207,7 +225,8 @@ function create_log($user_id, $text) {
     $ci->db->insert('logs', $d);
 }
 
-function document_button_title($attachments, $r, $k) {
+function document_button_title($attachments, $r, $k)
+{
     if (isset($attachments[$r->id][$k])) {
         if ($attachments[$r->id][$k]->offline_mode) {
             return 'via offline';
@@ -219,7 +238,8 @@ function document_button_title($attachments, $r, $k) {
     }
 }
 
-function document_button_class($attachments, $r, $k) {
+function document_button_class($attachments, $r, $k)
+{
     if (isset($attachments[$r->id][$k])) {
         if ($attachments[$r->id][$k]->offline_mode) {
             return 'warning';
@@ -229,4 +249,23 @@ function document_button_class($attachments, $r, $k) {
     } else {
         return 'danger';
     }
+}
+
+function the_logo()
+{
+    $ci = get_instance();
+    $ci->load->helper('html');
+    $airlines_id = $ci->session->userdata('airlines_id');
+    if ($airlines_id) {
+        $ci->db->where('id', $airlines_id);
+        $airlines = $ci->db->get('airlines')->row();
+        $logo = $airlines->airlines_logo;
+        $url = $airlines->airlines_url ? $airlines->airlines_url : site_url();
+    } else {
+        //maybe CIU?
+        $logo = 'logo-ciu-insurance.png';
+        $url = 'http://www.ciuinsurance.com/';
+    }
+
+    echo anchor($url, img('themes/bootstrap/img/' . $logo));
 }

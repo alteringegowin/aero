@@ -42,49 +42,30 @@
 
     <body style="padding:0px 0;">
 
-		<!-- header -->
-    	<div style="background:#f5f5f5; border-bottom:1px solid #fff">
+        <!-- header -->
+        <div style="background:#f5f5f5; border-bottom:1px solid #fff">
             <div class="container">
-            	<div class="row">
-            		<div class="span5" style="background:none;">
-                    	<a href="#"><img src="<?php echo $themes ?>img/logo-pcaero.png" style="display:block; margin-top:10px;" alt="PC AERO"></a>
+                <div class="row">
+                    <div class="span5" style="background:none;">
+                        <a href="#"><img src="<?php echo $themes ?>img/logo-pcaero.png" style="display:block; margin-top:10px;" alt="PC AERO"></a>
                         <p style="font-size:13px;">Highly Customizable System for Your Flight Bussiness</p>
                     </div>
-                    <div class="span7" style="background:none; text-align:right">
-                    	<?php if($this->session->userdata('user_id')) : ?>
-				<?php $tmp_username = $this->session->userdata('user_data');?>
-					<?php if($tmp_username['username']=='sky') : ?>
-				            	<a href="http://www.sky-aviation.co.id/" target="_blank">
-									<img src="<?php echo $themes ?>img/logo-sky-aviation.png" alt="SKY Aviation" style="margin-top:20px;">
-								</a>
-							<?php elseif($tmp_username['username']=='user01') : ?>
-				            	<a href="http://www.garuda-indonesia.com/" target="_blank">
-									<img src="<?php echo $themes ?>img/logo-garuda-indonesia.png" alt="Garuda Indonesia" style="margin-top:20px;">
-								</a>
-							<?php elseif($tmp_username['username']=='ciu') : ?>
-				            	<a href="http://www.ciuinsurance.com/" target="_blank">
-									<img src="<?php echo $themes ?>img/logo-ciu-insurance.png" alt="CIU Insurance" style="margin-top:20px;">
-								</a>
-							<?php endif; ?>
-                    	<?php else : ?>
-		                	<a href="http://www.ciuinsurance.com/" target="_blank">
-								<img src="<?php echo $themes ?>img/logo-ciu-insurance.png" alt="CIU Insurance" style="margin-top:20px;">
-							</a>                    	
-                    	<?php endif; ?>
+                    <div id="logo-airlines" class="span7">
+                        <?php the_logo()?>
                     </div>
-            	</div>
+                </div>
             </div>
-            
+
         </div>
         <!-- /.header -->
-        
+
         <!-- nav -->
         <div style="background:#333; border-top:1px solid #ccc; border-bottom:5px solid #ccc;">
-        	<div class="container">
-        		<div class="row" style="background:none">
-            		<div class="span12" style="background:none; height:36px;  padding-top:20px;">
-                    
-                    
+            <div class="container">
+                <div class="row" style="background:none">
+                    <div class="span12" style="background:none; height:36px;  padding-top:20px;">
+
+
                         <?php if ($this->session->userdata('user_id')): ?>
                             <div class="subnav">
                                 <ul class="nav nav-pills">
@@ -94,7 +75,7 @@
                                         <li class="<?php echo get_current_class('release', 1) ?>"><?php echo anchor('release', 'Release') ?></li>
                                         <li class="<?php echo get_current_class('document', 1) ?>"><?php echo anchor('document', 'Documents') ?></li>
                                     <?php endif; ?>
-        
+
                                     <?php if ($this->session->userdata('group') == 'ciu'): ?>
                                         <li class="<?php echo get_current_class('ciu', 1) ?>"><?php echo anchor('ciu', 'Progress Monitoring') ?></li>
                                     <?php endif; ?>
@@ -103,25 +84,25 @@
                             </div>
                         <?php endif; ?>
                     </div>
-                    
-            	</div>
+
+                </div>
             </div>
         </div>
         <!-- /.nav -->    
-    
-    	<!-- content -->
+
+        <!-- content -->
         <div class="container" style="padding-top:30px; padding-bottom:30px;">
-            
+
             <?php echo $content; ?>
 
         </div> <!-- /container -->
-		<!-- /.content -->
-        
+        <!-- /.content -->
+
         <!-- footer -->
         <div style="background:#333; border-bottom:6px solid #000">
-        	<div class="container">
-            	<div class="row">
-                	<div class="span12" style="background:none; height:50px; color:#ccc">&copy; 2012 PC AERO Ver.2</div>
+            <div class="container">
+                <div class="row">
+                    <div class="span12" style="background:none; height:50px; color:#ccc">&copy; 2012 PC AERO Ver.2</div>
                 </div>
             </div>
         </div>
