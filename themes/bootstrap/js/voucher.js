@@ -15,20 +15,25 @@
                 $("#total_pax_cancel").removeClass("disabled");
                 $("#total_pax_delay").addClass("disabled");
                 $("#total_pax_transfer").addClass("disabled");
+                $("#total_pax_reroute").addClass("disabled");
                 
                 $("#total_pax_cancel").removeAttr("disabled", "disabled");
                 $("#total_pax_delay").attr("disabled", "disabled");
                 $("#total_pax_transfer").attr("disabled", "disabled");
+                $("#total_pax_reroute").attr("disabled", "disabled");
                 
                 $("#total_pax_delay").val('');
                 $("#total_pax_transfer").val('');
+                $("#total_pax_reroute").val('');
             }else{
                 $("#total_pax_delay").removeClass("disabled");
                 $("#total_pax_transfer").removeClass("disabled");
+                $("#total_pax_reroute").removeClass("disabled");
                 $("#total_pax_cancel").addClass("disabled");
                 
                 $("#total_pax_delay").removeAttr("disabled");
                 $("#total_pax_transfer").removeAttr("disabled");
+                $("#total_pax_reroute").removeAttr("disabled");
                 $("#total_pax_cancel").attr("disabled", "disabled");
                 $("#total_pax_cancel").val("");
             
