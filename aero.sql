@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 18, 2012 at 09:32 PM
+-- Generation Time: Mar 19, 2012 at 06:53 AM
 -- Server version: 5.1.58
 -- PHP Version: 5.3.6-13ubuntu3.6
 
@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS `aero_airlines` (
 INSERT INTO `aero_airlines` (`id`, `airlines_name`, `airlines_logo`, `airlines_url`) VALUES
 (1, 'GARUDA INDONESIA', 'logo-garuda-indonesia.png', 'http://www.garuda-indonesia.com/'),
 (2, 'TRAVEL EXPRESS AVIATION', 'logo-sky-aviation.png', 'http://www.sky-aviation.co.id'),
-(3, 'INDONESIA AIR ASIA', '', ''),
-(4, 'TRANS AVIATION MAUNDER', '', ''),
-(5, 'SKY AVIATION', '', '');
+(3, 'INDONESIA AIR ASIA', 'logo-airasia-bw.png', ''),
+(4, 'TRANS AVIATION MAUNDER', 'logo-travel-express-aviaton.png', ''),
+(5, 'SKY AVIATION', 'logo-sky-aviation-bw.png', '');
 
 -- --------------------------------------------------------
 
@@ -566,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `aero_users` (
 --
 
 INSERT INTO `aero_users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `remember_code`, `created_on`, `last_login`, `active`, `fullname`) VALUES
-(1, 2130706433, 'garuda1', '71f58b5e29c5c8453512196e143563a9c9bca21f', NULL, 'garuda1@garuda.co.id', NULL, NULL, NULL, 1332080475, 1332081029, 1, NULL),
+(1, 2130706433, 'garuda1', '71f58b5e29c5c8453512196e143563a9c9bca21f', NULL, 'garuda1@garuda.co.id', NULL, NULL, NULL, 1332080475, 1332114635, 1, NULL),
 (2, 2130706433, 'garuda2', '82b20ffe4ae3566d40cfbe44c1177eb1a554202a', NULL, 'garuda2@garuda.co.id', NULL, NULL, NULL, 1332080518, 1332080518, 1, NULL),
 (3, 2130706433, 'express1', '5bc918466879df1afb7c56d2905bd6033e210a04', NULL, 'express@mail.com', NULL, NULL, NULL, 1332080610, 1332080610, 1, NULL),
 (4, 2130706433, 'express2', 'f0ecae1dc3729023ece6ef43875c1e946e5fb401', NULL, 'express@mail.com', NULL, NULL, NULL, 1332080610, 1332080610, 1, NULL),
@@ -574,7 +574,7 @@ INSERT INTO `aero_users` (`id`, `ip_address`, `username`, `password`, `salt`, `e
 (6, 2130706433, 'airasia2', 'e4355d5da85867d238622c9cbfd20fdd53c35d58', NULL, 'airasia12@mail.com', NULL, NULL, NULL, 1332080739, 1332080739, 1, NULL),
 (7, 2130706433, 'trans1', '559b3e5d90b4cb2c2a33f4ed1d4d088ed365713e', NULL, 'trans1@mail.com', NULL, NULL, NULL, 1332080783, 1332080783, 1, NULL),
 (8, 2130706433, 'trans2', 'fa328da94874045c88a3a503b8836a7ae07a9425', NULL, 'trans13@mail.com', NULL, NULL, NULL, 1332080783, 1332080783, 1, NULL),
-(9, 2130706433, 'sky1', '8fc6102745141548cfd82cc26f43eea6686bf509', NULL, 'sky1@gmail.com', NULL, NULL, NULL, 1332080847, 1332080847, 1, NULL),
+(9, 2130706433, 'sky1', '8fc6102745141548cfd82cc26f43eea6686bf509', NULL, 'sky1@gmail.com', NULL, NULL, NULL, 1332080847, 1332082759, 1, NULL),
 (10, 2130706433, 'sky2', '233a6537ee47ee81623f434a30a71e0b9cce04d4', NULL, 'sky2@gmail.com', NULL, NULL, NULL, 1332080847, 1332080847, 1, NULL),
 (11, 2130706433, 'ciu', '6db3f06984bb536509045e92442122ed03687e27', NULL, 'ciu@gmail.com', NULL, NULL, NULL, 1332080907, 1332080907, 1, NULL);
 
