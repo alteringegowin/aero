@@ -92,15 +92,15 @@
     <div class="row">
         <div class="span4">
             <label for="fileInput">Upload Telex File</label>
-            <input class="input-file" id="fileInput" name="telex" type="file">
+            <input class="input-file" id="fileInput" name="file-1" type="file">
         </div>
         <div class="span4">
             <label for="fileInput">Upload Manifest</label>
-            <input class="input-file" id="fileInput2" name="manifest" type="file">
+            <input class="input-file" id="fileInput2" name="file-2" type="file">
         </div>
         <div class="span4">
             <label for="fileInput">Upload Movement</label>
-            <input class="input-file" id="fileInput3" name="movement" type="file">
+            <input class="input-file" id="fileInput3" name="file-3" type="file">
         </div>
     </div>
 

@@ -57,19 +57,12 @@ class Voucher extends CI_Controller
         $this->form_validation->set_rules('total_pax_cancel', 'Total Pax Cancel', 'trim|numeric');
         $this->form_validation->set_rules('total_pax_reroute', 'Total Pax Re-route', 'trim|numeric');
         $this->form_validation->set_rules('total_pax_transfer', 'Total Pax Transfer', 'trim|numeric');
-        $this->form_validation->set_rules('Telex', 'Attachment Telex', 'callback__attach_file_telex');
-        $this->form_validation->set_rules('manifest', 'Attachment Manifest', 'callback__attach_file_manifest');
-        $this->form_validation->set_rules('movement', 'Attachment Movement', 'callback__attach_file_movement');
+        $this->form_validation->set_rules('file-1', 'Attachment Telex', 'callback__attach_file_telex');
 
         if ($this->form_validation->run()) {
-            xdebug($_FILES);
-            die;
-
 
             $post = $this->input->post(NULL, true);
-            $attachments = $this->session->userdata;
-            xdebug($attachments);
-            die;
+            $attachments = $this->session->userdata('attachments');
 
             $date = date('Y-m-d', strtotime($post['flight_date']));
             $dbflight['user_id'] = $this->session->userdata('user_id');
@@ -96,16 +89,15 @@ class Voucher extends CI_Controller
             $this->voucher_model->create_voucher('cancelled', element('total_pax_cancel', $post, 0), $post['flight_number'], $voucher_id);
 
             //attachments
-            $attc = array('telex', 'manifest', 'movement');
-            for ($i = 0; $i < 3; $i++) {
-                if ($this->session->userdata('attachment_' . $attc[$i])) {
+            if ($attachments) {
+                foreach ($attachments as $k => $v) {
                     $dbattach['voucher_id'] = $voucher_id;
-                    $dbattach['attachment_type'] = $i;
-                    $dbattach['attachment_file'] = $this->session->userdata('attachment_' . $attc[$i]);
+                    $dbattach['attachment_type'] = $k;
+                    $dbattach['attachment_file'] = $v['file_name'];
                     $dbattach['offline_mode'] = 0;
                     $this->db->insert('attachments', $dbattach);
-                    $this->session->unset_userdata('attachment_' . $attc[$i]);
                 }
+                $this->session->unset_userdata('attachments');
             }
 
 
@@ -192,7 +184,8 @@ class Voucher extends CI_Controller
                         $msg[] = $this->upload->display_errors($v['name'] . ' ', '<br/>');
                         $errors = true;
                     } else {
-                        $files[] = $this->upload->data();
+                        $ks = str_replace('file-', '', $k);
+                        $files[$ks] = $this->upload->data();
                     }
                 }
             }
@@ -205,107 +198,11 @@ class Voucher extends CI_Controller
                 $this->form_validation->set_message('_attach_file_telex', $error);
                 return FALSE;
             } else {
+                $this->session->set_userdata('attachments', $files);
                 return true;
             }
         }
     }
-
-    function _attach_files_manifest()
-    {
-        if ($_FILES['manifest']['name']) {
-            $config['upload_path'] = './attachments/';
-            $config['allowed_types'] = 'pdf|csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
-            $config['max_size'] = '2000';
-            $this->load->library('upload', $config);
-            if (!$this->upload->do_upload('manifest')) {
-                $error = 'Manifest file Error:' . $this->upload->display_errors();
-                $this->form_validation->set_message('_attach_files_manifest', $error);
-                return FALSE;
-            } else {
-                $attachments = array();
-                $data = $this->upload->data();
-                $this->session->set_userdata('attachments_manifest', $data['file_name']);
-                return true;
-            }
-        } else {
-            return true;
-        }
-    }
-
-    function _attach_files_movement()
-    {
-        if ($_FILES['movement']['name']) {
-            $config['upload_path'] = './attachments/';
-            $config['allowed_types'] = 'pdf|csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
-            $config['max_size'] = '2000';
-
-            $this->load->library('upload', $config);
-            if (!$this->upload->do_upload('movement')) {
-                $error = 'Movement file Error:' . $this->upload->display_errors();
-                $this->form_validation->set_message('_attach_files_movement', $error);
-                return FALSE;
-            } else {
-                $attachments = array();
-                $data = $this->upload->data();
-                $this->session->set_userdata('attachments_movement', $data['file_name']);
-                return true;
-            }
-        } else {
-            return true;
-        }
-    }
-
-    /*
-      function _upload_data() {
-      $config['upload_path'] = './uploads/passanger/';
-      $config['allowed_types'] = 'csv';
-      $config['allowed_types'] = 'csv';
-      $config['max_size'] = '1000';
-
-      $this->load->library('upload', $config);
-
-      if (!$this->upload->do_upload()) {
-      $error = $this->upload->display_errors();
-      $this->form_validation->set_message('_upload_data', $error);
-      return FALSE;
-      } else {
-      $data = $this->upload->data();
-      $fopen = fopen($data['full_path'], 'r');
-      $i = 0;
-      $sudah_ada = 0;
-      $sukses = 0;
-      while (($data = fgetcsv($fopen, 1000, ";")) !== FALSE) {
-      if (count($data) == 7) {
-      if ($i) {
-      $this->db->where('passenger_ticket', $data[2]);
-      $row = $this->db->get('vouchers')->row();
-      if ($row) {
-      $sudah_ada++;
-      } else {
-      $sukses++;
-      $db['flight_id'] = $this->uri->segment(3, 0);
-      $db['passenger_name'] = $data[1];
-      $db['passenger_ticket'] = $data[2];
-      $db['passenger_booking'] = $data[3];
-      $db['passenger_fr'] = $data[4];
-      $db['passenger_remark'] = $data[5];
-      $db['passenger_date'] = $data[6];
-      $this->db->where('voucher_code', $data[0]);
-      $this->db->update('vouchers', $db);
-      }
-      }
-      }
-      $i++;
-      }
-      $session['sudah_ada'] = $sudah_ada;
-      $session['sukses'] = $sukses;
-      $session['total'] = $i - 1;
-      $this->session->set_userdata('statistic_upload', $session);
-      return TRUE;
-      }
-      }
-     * 
-     */
 
     function _selisih()
     {
