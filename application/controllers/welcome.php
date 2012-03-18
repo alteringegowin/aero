@@ -33,19 +33,10 @@ class Welcome extends CI_Controller
 
     public function delay()
     {
-        $this->load->helper('array');
-        $row = array();
-        if (($handle = fopen("delay.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-                $row[$data[0]] = $data[1];
-            }
-            fclose($handle);
-        }
-
-        for ($i = 0; $i < 100; $i++) {
-            $d['code'] = sprintf("%02d", $i);
-            $d['note'] = element($i, $row, '');
-            $this->db->insert('delay_codes', $d);
+        $this->load->helper('file');
+        $dir = get_dir_file_info('attachments', TRUE);
+        foreach ($dir as $k => $v) {
+            xdebug($k . ' ===== ' . get_mime_by_extension($v['server_path']));
         }
     }
 

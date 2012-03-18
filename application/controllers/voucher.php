@@ -62,8 +62,14 @@ class Voucher extends CI_Controller
         $this->form_validation->set_rules('movement', 'Attachment Movement', 'callback__attach_file_movement');
 
         if ($this->form_validation->run()) {
+            xdebug($_FILES);
+            die;
+
+
             $post = $this->input->post(NULL, true);
-            $attachments = $this->session->userdata('attachments');
+            $attachments = $this->session->userdata;
+            xdebug($attachments);
+            die;
 
             $date = date('Y-m-d', strtotime($post['flight_date']));
             $dbflight['user_id'] = $this->session->userdata('user_id');
@@ -90,17 +96,18 @@ class Voucher extends CI_Controller
             $this->voucher_model->create_voucher('cancelled', element('total_pax_cancel', $post, 0), $post['flight_number'], $voucher_id);
 
             //attachments
-            if ($attachments) {
-                foreach ($attachments as $k => $v) {
+            $attc = array('telex', 'manifest', 'movement');
+            for ($i = 0; $i < 3; $i++) {
+                if ($this->session->userdata('attachment_' . $attc[$i])) {
                     $dbattach['voucher_id'] = $voucher_id;
-                    $dbattach['attachment_type'] = $k;
-                    $dbattach['attachment_file'] = $v;
+                    $dbattach['attachment_type'] = $i;
+                    $dbattach['attachment_file'] = $this->session->userdata('attachment_' . $attc[$i]);
                     $dbattach['offline_mode'] = 0;
                     $this->db->insert('attachments', $dbattach);
+                    $this->session->unset_userdata('attachment_' . $attc[$i]);
                 }
             }
 
-            $this->session->unset_userdata('attachments');
 
             $log_text = anchor('ciu/detail/' . $voucher_id, ' request voucher ' . $post['flight_number']);
             $this->log_model->save_log(3, $this->session->userdata('user_id'), $log_text);
@@ -118,7 +125,6 @@ class Voucher extends CI_Controller
             $ddbandara[$r->kode] = $r->kode;
         }
 
-        $this->session->unset_userdata('attachments');
 
         $this->db->order_by('code');
         $codes = $this->db->get('delay_codes')->result();
@@ -169,25 +175,38 @@ class Voucher extends CI_Controller
 
     function _attach_file_telex()
     {
-        if ($_FILES['telex']['name']) {
+        if ($_FILES) {
+            $files = array();
+            $msg = array();
             $config['upload_path'] = './attachments/';
-            $config['allowed_types'] = 'pdf|csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
+            $config['allowed_types'] = '*';
             $config['max_size'] = '2000';
 
             $this->load->library('upload', $config);
-            if (!$this->upload->do_upload('telex')) {
-                $error = 'Telex file Error:' . $this->upload->display_errors();
+
+            $errors = false;
+            foreach ($_FILES as $k => $v) {
+                if (!empty($v['name'])) {
+
+                    if (!$this->upload->do_upload($k)) {
+                        $msg[] = $this->upload->display_errors($v['name'] . ' ', '<br/>');
+                        $errors = true;
+                    } else {
+                        $files[] = $this->upload->data();
+                    }
+                }
+            }
+
+            if ($errors) {
+                foreach ($files as $key => $file) {
+                    @unlink($file['full_path']);
+                }
+                $error = implode('', $msg);
                 $this->form_validation->set_message('_attach_file_telex', $error);
                 return FALSE;
             } else {
-                $attachments = array();
-                $data = $this->upload->data();
-                $attachments[1] = $data['file_name'];
-                $this->session->set_userdata('attachments', $attachments);
                 return true;
             }
-        } else {
-            return true;
         }
     }
 
@@ -197,7 +216,6 @@ class Voucher extends CI_Controller
             $config['upload_path'] = './attachments/';
             $config['allowed_types'] = 'pdf|csv|doc|docx|xls|xlsx|txt|jpg|gif|png|jpeg|ppt|pptx|zip|tar';
             $config['max_size'] = '2000';
-
             $this->load->library('upload', $config);
             if (!$this->upload->do_upload('manifest')) {
                 $error = 'Manifest file Error:' . $this->upload->display_errors();
@@ -206,8 +224,7 @@ class Voucher extends CI_Controller
             } else {
                 $attachments = array();
                 $data = $this->upload->data();
-                $attachments[2] = $data['file_name'];
-                $this->session->set_userdata('attachments', $attachments);
+                $this->session->set_userdata('attachments_manifest', $data['file_name']);
                 return true;
             }
         } else {
@@ -230,8 +247,7 @@ class Voucher extends CI_Controller
             } else {
                 $attachments = array();
                 $data = $this->upload->data();
-                $attachments[3] = $data['file_name'];
-                $this->session->set_userdata('attachments', $attachments);
+                $this->session->set_userdata('attachments_movement', $data['file_name']);
                 return true;
             }
         } else {
