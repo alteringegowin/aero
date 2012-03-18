@@ -51,7 +51,7 @@
                         <p style="font-size:13px;">Highly Customizable System for Your Flight Bussiness</p>
                     </div>
                     <div id="logo-airlines" class="span7">
-                        <?php the_logo()?>
+                        <?php the_logo() ?>
                     </div>
                 </div>
             </div>
