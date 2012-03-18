@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 14, 2012 at 01:17 AM
+-- Generation Time: Mar 18, 2012 at 09:32 PM
 -- Server version: 5.1.58
 -- PHP Version: 5.3.6-13ubuntu3.6
 
@@ -62,11 +62,16 @@ CREATE TABLE IF NOT EXISTS `aero_airlines_users` (
 --
 
 INSERT INTO `aero_airlines_users` (`airlines_id`, `user_id`) VALUES
+(1, 1),
 (1, 2),
 (2, 3),
+(2, 4),
+(3, 5),
 (3, 6),
-(4, 9),
-(5, 7);
+(4, 7),
+(4, 8),
+(5, 9),
+(5, 10);
 
 -- --------------------------------------------------------
 
@@ -337,7 +342,126 @@ CREATE TABLE IF NOT EXISTS `aero_configurations` (
 INSERT INTO `aero_configurations` (`param`, `value`) VALUES
 ('voucher_price_delay', '300000'),
 ('voucher_price_transfer', '150000'),
-('voucher_price_cancelled', '150000');
+('voucher_price_cancelled', '150000'),
+('voucher_price_reroute', '150000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `aero_delay_codes`
+--
+
+CREATE TABLE IF NOT EXISTS `aero_delay_codes` (
+  `code` char(2) COLLATE utf8_unicode_ci NOT NULL,
+  `note` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `aero_delay_codes`
+--
+
+INSERT INTO `aero_delay_codes` (`code`, `note`) VALUES
+('00', ''),
+('01', ''),
+('02', ''),
+('03', ''),
+('04', ''),
+('05', ''),
+('06', 'No gate/stand availability due to own airline activity'),
+('07', 'Aircraft connection by maintenance'),
+('08', 'Aircraft connection by miscellaneous, traffic, marketing flight operations, ground handling, cabin services, etc.'),
+('09', 'Scheduled ground time less than declared minimum ground time'),
+('10', ''),
+('11', 'Late check-in, acceptance of passengers after deadline'),
+('12', 'Late Check-in, congestion in check-in area'),
+('13', 'Check-in error'),
+('14', 'Overbooking, booking errors'),
+('15', 'Boarding, discrepancies and paging, missing checked-in passenger at gate'),
+('16', 'Commercial Publicity, Passenger Convenience, VIP, Press, Ground meals and missing personal items'),
+('17', 'Catering order, late or incorrect order given to supplier'),
+('18', 'Baggage processing, sorting, etc.'),
+('19', ''),
+('20', ''),
+('21', 'A Documentation, errors, etc.'),
+('22', 'Late positioning'),
+('23', 'Late acceptance'),
+('24', 'Inadequate packing'),
+('25', 'Overbooking, booking errors'),
+('26', 'Late preparation in warehouse'),
+('27', 'Mail Oversales, packing, etc.'),
+('28', 'Mail Late positioning'),
+('29', 'Mail Late acceptance'),
+('30', ''),
+('31', 'Aircraft documentation late or inaccurate, weight and balance (Loadsheet), general declaration, passenger manifest, etc.'),
+('32', 'Loading, Unloading, bulky/special load, cabin load, lack of loading staff'),
+('33', 'Loading Equipment, lack of or breakdown, e.g. container pallet loader, lack of staff'),
+('34', 'Servicing Equipment, lack of or breakdown, lack of staff, e.g. steps'),
+('35', 'Aircraft Cleaning'),
+('36', 'Fuelling, Defuelling, fuel supplier'),
+('37', 'Catering, late delivery or loading'),
+('38', 'ULD, Containers, pallets, lack of or breakdown'),
+('39', 'Technical equipment, lack of or breakdown, lack of staff, e.g. pushback'),
+('40', ''),
+('41', 'Aircraft defects'),
+('42', 'Scheduled maintenance, late release'),
+('43', 'Non-scheduled maintenance, special checks and / or additional works beyond normal maintenance'),
+('44', 'Spares and maintenance equipment, lack of or breakdown'),
+('45', 'AOG (Aircraft on ground for technical reasons) Spares, to be carried to another station'),
+('46', 'Aircraft change for technical reasons'),
+('47', 'Standby aircraft, lack of planned standby aircraft for technical reasons'),
+('48', 'Scheduled cabin configuration and version adjustment'),
+('49', ''),
+('50', ''),
+('51', 'Damage during flight operations, bird or lightning strike, turbulence, heavy or overweight landing'),
+('52', 'Damage during ground operations, collisions (other than during taxiing, loading/offloading damage, contamination, towing, extreme weather conditions'),
+('53', ''),
+('54', ''),
+('55', 'Departure Control System, Check-in, weight and balance (loadcontrol), computer system error, baggage sorting, gate-reader error or problems'),
+('56', 'Cargo preparation/documentation system'),
+('57', 'Flight plans'),
+('58', 'Other computer systems'),
+('59', ''),
+('60', ''),
+('61', 'Flight plan, late completion or change of flight documentation'),
+('62', 'Operational requirements, fuel, load alteration'),
+('63', 'Late crew boarding or departure procedures'),
+('64', 'Flight deck crew shortage, Crew rest'),
+('65', 'Flight deck crew special request or error'),
+('66', 'Late cabin crew boarding or departure procedures'),
+('67', 'Cabin crew shortage'),
+('68', 'Cabin crew error or special request'),
+('69', 'Captain request for security check, extraordinary'),
+('70', ''),
+('71', 'Departure station'),
+('72', 'Destination station'),
+('73', 'Enroute or Alternate'),
+('74', ''),
+('75', 'De-Icing of aircraft, removal of ice/snow, frost prevention'),
+('76', 'Removal of snow/ice/water/sand from airport/runway'),
+('77', 'Aircraft ground handling impaired by adverse weather conditions'),
+('78', ''),
+('79', ''),
+('80', ''),
+('81', 'ATC restriction en-route or capacity'),
+('82', 'ATC restriction due to staff shortage or equipment failure en-route'),
+('83', 'ATC restriction at destination'),
+('84', 'ATC restriction due to weather at destination'),
+('85', 'Mandatory security'),
+('86', 'Immigration, Customs, Health'),
+('87', 'Airport Facilities, parking stands, ramp congestion, buildings, gate limitations, ...'),
+('88', 'Restrictions at airport of destination, airport/runway closed due obstruction, industrial action, staff shortage, political unrest, noise abatement, night curfew, special flights, ...'),
+('89', 'Restrictions at airport of departure, airport/runway closed due obstruction, industrial action, staff shortage, political unrest, noise abatement, night curfew, special flights, start-up and pushback, ...'),
+('90', ''),
+('91', 'Passenger or Load Connection, awaiting load or passengers from another flight. Protection of stranded passengers onto a new flight.'),
+('92', 'Through Check-in error, passenger and bagage'),
+('93', 'Aircraft rotation'),
+('94', 'Cabin crew rotation'),
+('95', 'Crew rotation (entire or cockpit crew)'),
+('96', 'Operations control, rerouting, diversion, consolidation, aircraft change for reasons other than technical'),
+('97', 'Industrial action within own airline'),
+('98', 'Industrial action outside own airline'),
+('99', 'Miscellaneous, not elsewhere specified');
 
 -- --------------------------------------------------------
 
@@ -435,22 +559,24 @@ CREATE TABLE IF NOT EXISTS `aero_users` (
   `active` tinyint(1) unsigned DEFAULT NULL,
   `fullname` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `aero_users`
 --
 
 INSERT INTO `aero_users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `remember_code`, `created_on`, `last_login`, `active`, `fullname`) VALUES
-(1, 2130706433, 'administrator', '59beecdf7fc966e2f17fd8f65a4a9aeb09d4a3d4', '9462e8eee0', 'admin@admin.com', '', NULL, NULL, 1268889823, 1268889823, 1, 'Admin'),
-(2, 2130706433, 'user01', '3f88a087b26db383b86feb0e0b20128a9ad7ecde', NULL, '', NULL, NULL, NULL, 1330155047, 1331660227, 1, 'erwin'),
-(4, 2130706433, 'ciu', '15ded39dd1853c309855a454de3e7cc9cd5cf066', NULL, '', NULL, NULL, NULL, 1330172977, 1330848441, 1, 'Administrator CIU'),
-(5, 2130706433, 'garuda', '9ab1c26d763e54ddd09738177b84f139ffa74fb3', NULL, '', NULL, NULL, NULL, 1330252168, 1330263880, 1, 'Airlines Garuda 01'),
-(6, 2130706433, 'airasia', '3e68901d87b8f4babf2828360da116ad5582156b', NULL, '', NULL, NULL, NULL, 1330252212, 1330261169, 1, 'Air Asia'),
-(7, 2130706433, 'sky', 'adbf90a84db4fe1f5292b6bd1076dcd32f49c1aa', NULL, '', NULL, NULL, NULL, 1330252229, 1330486147, 1, 'SKY'),
-(8, 2130706433, 'express', 'b37ffdfab82b83dcbf84c815c3cb4265ea8d0f68', NULL, '', NULL, NULL, NULL, 1330252247, 1330252247, 1, 'Travel Express'),
-(9, 0, 'maunder', '17b661f7da583467e2e1d6b613360096ace4aecd', NULL, '', NULL, NULL, NULL, 1330848813, 1330848813, 1, 'TRANS AVIATION MAUNDER'),
-(3, 2130706433, 'express2', 'b37ffdfab82b83dcbf84c815c3cb4265ea8d0f68', NULL, '', NULL, NULL, NULL, 1330252247, 1330252247, 1, 'Travel Express');
+(1, 2130706433, 'garuda1', '71f58b5e29c5c8453512196e143563a9c9bca21f', NULL, 'garuda1@garuda.co.id', NULL, NULL, NULL, 1332080475, 1332081029, 1, NULL),
+(2, 2130706433, 'garuda2', '82b20ffe4ae3566d40cfbe44c1177eb1a554202a', NULL, 'garuda2@garuda.co.id', NULL, NULL, NULL, 1332080518, 1332080518, 1, NULL),
+(3, 2130706433, 'express1', '5bc918466879df1afb7c56d2905bd6033e210a04', NULL, 'express@mail.com', NULL, NULL, NULL, 1332080610, 1332080610, 1, NULL),
+(4, 2130706433, 'express2', 'f0ecae1dc3729023ece6ef43875c1e946e5fb401', NULL, 'express@mail.com', NULL, NULL, NULL, 1332080610, 1332080610, 1, NULL),
+(5, 2130706433, 'airasia1', '23e6834af5a5ebfe5ce29dcfad58651ba90be923', NULL, 'airasia1@mail.com', NULL, NULL, NULL, 1332080739, 1332080739, 1, NULL),
+(6, 2130706433, 'airasia2', 'e4355d5da85867d238622c9cbfd20fdd53c35d58', NULL, 'airasia12@mail.com', NULL, NULL, NULL, 1332080739, 1332080739, 1, NULL),
+(7, 2130706433, 'trans1', '559b3e5d90b4cb2c2a33f4ed1d4d088ed365713e', NULL, 'trans1@mail.com', NULL, NULL, NULL, 1332080783, 1332080783, 1, NULL),
+(8, 2130706433, 'trans2', 'fa328da94874045c88a3a503b8836a7ae07a9425', NULL, 'trans13@mail.com', NULL, NULL, NULL, 1332080783, 1332080783, 1, NULL),
+(9, 2130706433, 'sky1', '8fc6102745141548cfd82cc26f43eea6686bf509', NULL, 'sky1@gmail.com', NULL, NULL, NULL, 1332080847, 1332080847, 1, NULL),
+(10, 2130706433, 'sky2', '233a6537ee47ee81623f434a30a71e0b9cce04d4', NULL, 'sky2@gmail.com', NULL, NULL, NULL, 1332080847, 1332080847, 1, NULL),
+(11, 2130706433, 'ciu', '6db3f06984bb536509045e92442122ed03687e27', NULL, 'ciu@gmail.com', NULL, NULL, NULL, 1332080907, 1332080907, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -463,22 +589,25 @@ CREATE TABLE IF NOT EXISTS `aero_users_groups` (
   `user_id` mediumint(8) unsigned NOT NULL,
   `group_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `aero_users_groups`
 --
 
 INSERT INTO `aero_users_groups` (`id`, `user_id`, `group_id`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 2, 2),
-(5, 4, 3),
-(6, 5, 2),
-(7, 6, 2),
-(8, 7, 2),
-(9, 8, 2),
-(10, 9, 2);
+(1, 1, 2),
+(2, 2, 2),
+(3, 3, 2),
+(4, 4, 2),
+(5, 5, 2),
+(6, 6, 2),
+(7, 7, 2),
+(8, 8, 2),
+(9, 9, 2),
+(10, 10, 2),
+(11, 11, 3),
+(12, 11, 2);
 
 -- --------------------------------------------------------
 
@@ -499,6 +628,7 @@ CREATE TABLE IF NOT EXISTS `aero_vouchers` (
   `flight_std` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `flight_etd` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `total_pax_delay` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `total_pax_reroute` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `total_pax_transfer` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `total_pax_cancelled` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `attachment` text COLLATE utf8_unicode_ci NOT NULL,
