@@ -38,6 +38,12 @@
         <link rel="apple-touch-icon" href="<?php echo $themes ?>images/apple-touch-icon.png">
         <link rel="apple-touch-icon" sizes="72x72" href="<?php echo $themes ?>images/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="114x114" href="<?php echo $themes ?>images/apple-touch-icon-114x114.png">
+
+        <?php if (isset($is_graph_dashboard)): ?>
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <?php endif; ?>
+
+
     </head>
 
     <body style="padding:0px 0;">
