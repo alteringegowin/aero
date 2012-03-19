@@ -8,7 +8,10 @@
                 <tr>
                     <th>Status</th>
                     <th>Flight Number</th>
-                    <th>File</th>
+
+                    <?php foreach ($doc_upload_type as $k => $d): ?>
+                        <th><?php echo $d ?></th>
+                    <?php endforeach; ?>
                     <th>Req By</th>
                 </tr>
             </thead>
@@ -25,15 +28,11 @@
 
                             </p>
                         </td>
-                        <td >
-                            <?php foreach ($doc_upload_type as $k => $d): ?>
-                                <?php $class_btn = isset($attachments[$r->id][$k]) ? '#' : 'danger'; ?>
-                                <a rel="tooltip" 
-                                   data-original-title="<?php echo $d ?> <?php echo document_button_title($attachments, $r, $k) ?> " 
-                                   class="btn btn-small btn-<?php echo document_button_class($attachments, $r, $k) ?>" 
-                                   href="<?php echo site_url('document/upload/' . $r->id . '/' . $k) ?>"><i class="icon-file icon-<?php echo $doc_upload_type_icon[$k] ?>"></i> </a>
-                               <?php endforeach; ?>
-                        </td>
+                        <?php foreach ($doc_upload_type as $k => $d): ?>
+                            <td>
+                                <?php echo document_button_title($attachments, $r, $k) ?>
+                            </td>
+                        <?php endforeach; ?>
                         <td class="span1"><?php the_user($r->user_id) ?></td>
                     </tr>
                 <?php endforeach; ?>
