@@ -269,3 +269,22 @@ function the_logo()
 
     echo anchor($url, img('themes/bootstrap/img/' . $logo));
 }
+
+function cetak_logo($airlines_id)
+{
+    $ci = get_instance();
+    $ci->load->helper('html');
+    if ($airlines_id) {
+        $ci->db->where('id', $airlines_id);
+        $airlines = $ci->db->get('airlines')->row();
+        $logo = $airlines->airlines_logo;
+        $url = $airlines->airlines_url ? $airlines->airlines_url : site_url();
+    } else {
+        //maybe CIU?
+        $logo = 'logo-ciu-insurance.png';
+        $url = 'http://www.ciuinsurance.com/';
+    }
+    $x = explode('.', $logo);
+    $logo = $x[0] . '-bw.' . $x[1];
+    echo img('themes/bootstrap/img/' . $logo);
+}
