@@ -17,21 +17,20 @@
     </head>
 
     <body onLoad="printpage()">
-		<?php //print_r($vouchers); die;?>
 		<?php $tmp_username = $this->session->userdata('user_data');?>
     	<?php foreach($vouchers as $voucer) : ?>
         <!-- print voucher -->
         <div class="container">
         	<div class="row">
             	<div class="span4">
-                	<div style="font-size:24px; line-height:22px;">FLIGHT INSURANCE</div>
-                    <div style="font-size:47px; line-height:50px;">VOUCHER</div>
+                	<div style="font-size:24px; line-height:22px;">VOUCHER</div>
+                    <div style="font-size:47px; line-height:50px;">KM77</div>
                 </div>
                 <div class="span8">
                 	<div style="font-size:14px; text-align:right; line-height:15px;">Code Voucher</div>
                     <div style="font-size:35px; font-weight:bold; text-align:right; font-family:Tahoma, Arial, Helvetica, sans-serif; line-height:40px;"><?php echo $voucer->voucher_code; ?></div>
-                    <div style="font-size:15px; text-align:right; line-height:18px; margin-bottom:15px; ">Date Create: <?php echo date('Y-M-d',strtotime($voucer->voucher_created_at));?> - Valid Until: <?php 
-                    echo date('Y-M-d',strtotime(date("Y-m-d", strtotime($voucer->voucher_created_at)) . " +1 month"));?></div>
+                    <div style="font-size:15px; text-align:right; line-height:18px; margin-bottom:15px; ">Date Create: <?php echo date('d M Y',strtotime($voucer->voucher_created_at));?> - Valid Until: <?php 
+                    echo date('d M Y',strtotime(date("Y-m-d", strtotime($voucer->voucher_created_at)) . " +30 DAYS"));?></div>
                 </div>
             </div>
             <div class="row">
@@ -62,13 +61,11 @@
                 <div class="span5">
                 	<p style="margin-bottom:0px;">NOTES:</p>
 					<ul style="margin:0px 0 0 20px; padding:0px; list-style-type:lower-alpha; font-size:11px; font-weight:bold ">
-                    	<li>Voucher ini berlaku sampai dengan tanggal berlaku berdasarkan default system 30 hari.</li>
-                        <li>Untuk mencairkan voucher ini harus membawa identitas yg berlaku.</li>
+                    	<li>Voucher berlaku selama 30 hari.</li>
+                        <li>Penukaran Voucher dapat dilakukan di Bank Mandiri terdekat dengan membawa identitas diri yang masih berlaku</li>
 
                 </div>
-                <!--
-                <div class="span4"><img src="<?php echo $themes ?>img/logo-ciu-pcaero.png" alt="CIU - PC Aeor"></div>
-                -->
+                <div class="span4"><?php cetak_logo($voucer->airlines_id)?></div>
                 
             </div>
         </div>
