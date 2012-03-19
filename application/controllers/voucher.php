@@ -31,7 +31,7 @@ class Voucher extends CI_Controller
 
     function index($offset=0)
     {
-
+        redirect('voucher/add');
         $limit = 10;
         $vouchers = $this->voucher_model->get_voucher_by_airlines($this->airlines_id, $offset);
         $pagination = create_pagination('voucher/index', $vouchers['total'], $limit, 3);
@@ -108,8 +108,8 @@ class Voucher extends CI_Controller
             $log_text = anchor('release/detail/' . $voucher_id, ' request voucher ' . $post['flight_number']);
             $this->log_model->save_log(2, $this->session->userdata('user_id'), $log_text);
 
-
-            redirect('voucher');
+            
+            redirect('document');
         }
         $this->db->order_by('kode');
         $res = $this->db->get('bandara')->result();
