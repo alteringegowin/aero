@@ -229,12 +229,14 @@ function document_button_title($attachments, $r, $k)
 {
     if (isset($attachments[$r->id][$k])) {
         if ($attachments[$r->id][$k]->offline_mode) {
-            return 'via offline';
+            return '<a class="btn btn-small btn-warning" href="' . site_url('document/upload/' . $r->id . '/' . $k) . '"><i class="icon-info-sign icon-white"></i> offline</a>
+                ';
         } else {
-            return 'via uploaded';
+            return '<a class="btn btn-small btn-success" href="' . site_url('document/upload/' . $r->id . '/' . $k) . '"><i class="icon-ok-sign icon-white"></i> done</a>
+                <br/><a href="' . base_url('attachments/' . $attachments[$r->id][$k]->attachment_file) . '">download</a>';
         }
     } else {
-        return 'not set';
+        return '<a class="btn btn-small btn-danger" href="' . site_url('document/upload/' . $r->id . '/' . $k) . '"><i class="icon-question-sign icon-white"></i> not set</a>';
     }
 }
 
