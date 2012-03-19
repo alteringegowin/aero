@@ -1,12 +1,15 @@
 <?php
 
-class Statistic_Model extends CI_Model {
+class Statistic_Model extends CI_Model
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
     }
 
-    function all_voucher_pie() {
+    function all_voucher_pie()
+    {
         $sql = "
         SELECT
             aa.id,
@@ -21,7 +24,8 @@ class Statistic_Model extends CI_Model {
         return $res;
     }
 
-    function pie_voucher_type() {
+    function pie_voucher_type()
+    {
         $sql = "
 
             SELECT
@@ -35,7 +39,36 @@ class Statistic_Model extends CI_Model {
         return $res;
     }
 
-    function all_flight_monthly_year($year='') {
+    function airlines_dashboard($airlines_id, $periode='3 DAY')
+    {
+        $sql = "
+            SELECT ap.voucher_type, COUNT( ap.id ) AS total
+            FROM  `aero_passengers` ap
+                LEFT JOIN aero_vouchers av ON av.id = ap.voucher_id
+            WHERE 
+            av.airlines_id = ? 
+            AND
+            av.voucher_created_at >= DATE_ADD( CURDATE() , INTERVAL -$periode)
+            GROUP BY  `voucher_type` 
+            ORDER BY voucher_type
+            ";
+        $graph = $this->db->query($sql, array($airlines_id))->result();
+        $d = array();
+        foreach ($graph as $r) {
+            $d[$r->voucher_type] = $r->total;
+        }
+        
+        $def['delay'] = 0;
+        $def['reroute'] = 0;
+        $def['transfer'] = 0;
+        $def['cancelled'] = 0;
+
+        $data = array_merge($def, $d);
+        return $data;
+    }
+
+    function all_flight_monthly_year($year='')
+    {
         $year = $year ? $year : date('Y');
 
         $this->db->order_by('id');
@@ -80,7 +113,8 @@ class Statistic_Model extends CI_Model {
         return $ret;
     }
 
-    function all_flight_monthly($year='') {
+    function all_flight_monthly($year='')
+    {
         $year = $year ? $year : date('Y');
 
         $this->db->order_by('id');
@@ -128,7 +162,8 @@ class Statistic_Model extends CI_Model {
         return $ret;
     }
 
-    function all_flight_weekly($year='', $month='') {
+    function all_flight_weekly($year='', $month='')
+    {
         $year = $year ? $year : date('Y');
         $month = $month ? $month : date('m');
 
@@ -177,7 +212,8 @@ class Statistic_Model extends CI_Model {
         return $ret;
     }
 
-    function all_flight_daily($year='', $month='') {
+    function all_flight_daily($year='', $month='')
+    {
         $year = $year ? $year : date('Y');
         $month = $month ? $month : date('m');
 
@@ -228,7 +264,8 @@ class Statistic_Model extends CI_Model {
         return $ret;
     }
 
-    function by_airlines_monthly($airlines_id, $tahun= '') {
+    function by_airlines_monthly($airlines_id, $tahun= '')
+    {
         $tahun = $tahun ? $tahun : date('Y');
         $sql = "
         SELECT
@@ -257,7 +294,8 @@ class Statistic_Model extends CI_Model {
         return $ret;
     }
 
-    function by_airlines_daily($airlines_id, $tahun='', $bulan= '') {
+    function by_airlines_daily($airlines_id, $tahun='', $bulan= '')
+    {
         $tahun = $tahun ? $tahun : date('Y');
         $bulan = $bulan ? $bulan : date('m');
         $bulan = (int) $bulan;

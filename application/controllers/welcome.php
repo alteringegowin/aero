@@ -58,7 +58,7 @@ class Welcome extends CI_Controller
 //        $this->db->insert('airlines_users',$db);
 //        
         $this->load->library('ion_auth');
-        $user_id = $this->ion_auth->register('ciu', 'ciupassword', 'ciu@gmail.com', array(), array(3));
+        $user_id = $this->ion_auth->register('ciumember', 'ciupassword', 'ciu@gmail.com', array(), array(3));
     }
 
 }

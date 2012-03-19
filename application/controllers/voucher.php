@@ -223,13 +223,13 @@ class Voucher extends CI_Controller
         $total = $total_etd - $total_std;
 
         if ($total > (60 * 4)) {
-            $this->form_validation->set_message('_selisih', 'STD dan ETD Lebih Dari 4 jam');
-            return FALSE;
+            return true;
         } elseif ($total < 1) {
             $this->form_validation->set_message('_selisih', 'ETD lebih awal daripada STD');
             return FALSE;
         } else {
-            return true;
+            $this->form_validation->set_message('_selisih', 'STD dan ETD Kurang Dari 4 jam');
+            return FALSE;
         }
     }
 

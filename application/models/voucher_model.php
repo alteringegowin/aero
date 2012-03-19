@@ -58,6 +58,7 @@ class Voucher_Model extends CI_Model
             $dbvoucher['voucher_id'] = $voucher_id;
             $dbvoucher['voucher_code'] = $voucher_code;
             $dbvoucher['price'] = $price;
+            $dbvoucher['voucher_type'] = $type;
             $dbvoucher['next_voucher_key'] = $next_voucher;
             $this->db->insert('passengers', $dbvoucher);
             $next_voucher++;
