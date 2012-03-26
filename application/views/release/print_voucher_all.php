@@ -68,6 +68,8 @@
                 <div class="span4"><?php cetak_logo($voucer->airlines_id)?></div>
                 
             </div>
+            
+            <hr style="padding:10px;border-bottom:dotted 4px #ccc;"> 
         </div>
         <!-- /.print voucher -->
         <?php endforeach; ?>

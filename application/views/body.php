@@ -88,6 +88,16 @@
                                     <li><a href="<?php echo site_url('logout') ?>">Logout</a></li>
                                 </ul>
                             </div>
+                        <?php else: ?>
+                            <div class="subnav">
+                                <ul class="nav nav-pills">
+                                    <li ><?php echo anchor('#myModal-help', 'Help', 'data-toggle="modal"') ?></li>
+                                    <li ><?php echo anchor('#myModal-about-us', 'About Us', 'data-toggle="modal"') ?></li>
+                                    <li ><?php echo anchor('#myModal-terms', 'Terms And Condition', 'data-toggle="modal"') ?></li>
+                                    <li ><?php echo anchor('#myModal-disclaiminer', 'Disclaiminer', 'data-toggle="modal"') ?></li>
+                                    <li ><?php echo anchor('#myModal-info', 'Info', 'data-toggle="modal"') ?></li>
+                                </ul>
+                            </div>
                         <?php endif; ?>
                     </div>
 

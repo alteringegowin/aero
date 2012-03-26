@@ -14,15 +14,15 @@
                     <th>STD</th>
                     <th>ETD</th>
                     <th>Reason</th>
-                    <th>Req Time</th>
+                    <th>Request Time</th>
 
-                    <th>Req By</th>
+                    <th>Request By</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($vouchers['data'] as $r): ?>
                     <tr style="font-size: 11px">
-                        <td><h6><?php echo anchor('release/detail/' . $r->id, $r->flight_number) ?></h6></td>
+                        <td><h2><?php echo anchor('release/detail/' . $r->id, $r->flight_number . '  <small>[click here]</small>') ?></h2></td>
                         <td style="width:100px"><?php echo $r->flight_date ?></td>
                         <td style="width:100px"><?php echo $r->departure_city ?></td>
                         <td style="width:100px"><?php echo $r->arrival_city ?></td>

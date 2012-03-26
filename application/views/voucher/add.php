@@ -2,7 +2,7 @@
     <?php echo form_open_multipart('') ?>
     <div class="row">
         <div class="span12">
-            <h3>Request Voucher Flight</h3>
+            <h3>Request Voucher </h3>
             <hr/>
         </div>
     </div>
