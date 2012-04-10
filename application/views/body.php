@@ -54,7 +54,6 @@
                 <div class="row">
                     <div class="span5" style="background:none;">
                         <a href="#"><img src="<?php echo $themes ?>img/logo-pcaero.png" style="display:block; margin-top:10px;" alt="PC AERO"></a>
-                        <p style="font-size:13px;">Highly Customizable System for Your Flight Bussiness</p>
                     </div>
                     <div id="logo-airlines" class="span7">
                         <?php the_logo() ?>

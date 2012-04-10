@@ -44,6 +44,7 @@ class Voucher extends CI_Controller
 
     function add()
     {
+        $this->load->helper('text');
         $this->load->helper('array');
         $this->load->library('form_validation');
         $this->form_validation->set_rules('voucher_type', 'Voucher Type', 'trim|required');
@@ -108,8 +109,8 @@ class Voucher extends CI_Controller
             $log_text = anchor('release/detail/' . $voucher_id, ' request voucher ' . $post['flight_number']);
             $this->log_model->save_log(2, $this->session->userdata('user_id'), $log_text);
 
-            
-            redirect('document');
+
+            redirect('release/detail/' . $voucher_id);
         }
         $this->db->order_by('kode');
         $res = $this->db->get('bandara')->result();
@@ -118,16 +119,34 @@ class Voucher extends CI_Controller
         }
 
 
+		if($this->airlines_id == 3){
+			$this->db->where('airlines_id',3);
+		}
         $this->db->order_by('code');
         $codes = $this->db->get('delay_codes')->result();
         $ddDelay = array();
         foreach ($codes as $c) {
-            $ddDelay[$c->code] = $c->code . ' -' . $c->note;
+            $ddDelay[$c->code] = $c->code . ' -' . character_limiter($c->note, 60);
         }
+        $ddvoucher_type = array('delay' => 'Delay', 'cancelled' => 'Cancel');
 
+        $jam = range(0, 24);
+        $menit = range(0, 59);
+        $dd_waktu = array();
+        foreach ($jam as $j):
+            foreach ($menit as $m):
+                $t = sprintf("%02d:%02d", $j, $m);
+                $dd_waktu[$t] = $t;
+            endforeach;
+        endforeach;
+        
+        
+        $this->tpl['dd_waktu'] = $dd_waktu;
         $this->tpl['ddDelay'] = $ddDelay;
-        $this->tpl['jam'] = range(0, 24);
-        $this->tpl['menit'] = range(0, 59);
+        $this->tpl['ddvoucher_type'] = $ddvoucher_type;
+
+
+
         $this->tpl['ddbandara'] = $ddbandara;
         $this->tpl['content'] = $this->load->view('voucher/add', $this->tpl, true);
         $this->load->view('body', $this->tpl);
@@ -187,6 +206,14 @@ class Voucher extends CI_Controller
                         $ks = str_replace('file-', '', $k);
                         $files[$ks] = $this->upload->data();
                     }
+                } else {
+                    if ($k == 'file-1') {
+                        $this->form_validation->set_message('_attach_file_telex', 'File Telex Harus Diupload');
+                        return FALSE;
+                    } elseif ($k == 'file-2') {
+                        $this->form_validation->set_message('_attach_file_telex', 'File Manifest Harus Diupload');
+                        return FALSE;
+                    }
                 }
             }
 
@@ -206,6 +233,9 @@ class Voucher extends CI_Controller
 
     function _selisih()
     {
+        if ($this->input->post('voucher_type') == 'cancelled') {
+            return true;
+        }
         $std = $this->input->post('std');
         $etd = $this->input->post('etd');
 

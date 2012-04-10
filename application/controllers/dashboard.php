@@ -37,6 +37,27 @@ class Dashboard extends CI_Controller
          */
     }
 
+    function airlines_download_three_day()
+    {
+
+        $this->load->model('statistic_model');
+        $group = $this->ion_auth->in_group('airlines');
+
+        $graph_harian = $this->statistic_model->airlines_dashboard($this->session->userdata('airlines_id'), '1 MONTH');
+        xdebug($graph_harian);
+
+        $this->load->library('table');
+
+        $data = array(
+            array('Name', 'Color', 'Size'),
+            array('Fred', 'Blue', 'Small'),
+            array('Mary', 'Red', 'Large'),
+            array('John', 'Green', 'Medium')
+        );
+
+        echo $this->table->generate($data);
+    }
+
     function airlines()
     {
         $this->load->model('statistic_model');
@@ -45,7 +66,7 @@ class Dashboard extends CI_Controller
         $graph_harian = $this->statistic_model->airlines_dashboard($this->session->userdata('airlines_id'));
         $graph_mingguan = $this->statistic_model->airlines_dashboard($this->session->userdata('airlines_id'), '1 WEEK');
         $graph_bulanan = $this->statistic_model->airlines_dashboard($this->session->userdata('airlines_id'), '1 MONTH');
-        
+
 
 
 

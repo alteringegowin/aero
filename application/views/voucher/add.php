@@ -20,82 +20,65 @@
     <?php endif; ?>
     <div class="row">
         <div class="span2"> 
-            <label for="select01">Voucher Type</label>
-            <select id="select01" class="span2" name="voucher_type">
-                <option value="delay">delay</option>
-                <option value="cancelled">cancel</option>
-            </select>
+            <label for="select01"><strong>Voucher Type *</strong></label>
+            <?php echo form_dropdown('voucher_type', $ddvoucher_type, NULL, 'id="select01" class="span2"') ?>
         </div>
         <div class="span2">
-            <label for="flight_number">Flight Number</label>
+            <label for="flight_number"><strong>Flight Number *</strong></label>
             <input type="text" class="span2" id="inpdate" name="flight_number"  value="<?php echo set_value('flight_number'); ?>" >
         </div>
         <div class="span2">
-            <label for="flight_date">Flight Date</label>
+            <label for="flight_date"><strong>Flight Date *</strong></label>
             <input type="text" data-datepicker="datepicker" class="span2" id="flight_date" name="flight_date"  value="<?php echo set_value('flight_date', date('m/d/Y')); ?>" >
         </div>
         <div class="span1">
-            <label for="std">STD</label>
-            <select id="std" class="span1" name="std">
-                <option value="" disabled="disabled">STD</option>
-                <?php foreach ($jam as $j): ?>
-                    <?php foreach ($menit as $m): ?>
-                        <option><?php echo sprintf("%02d", $j) ?>:<?php echo sprintf("%02d", $m) ?></option>
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
-            </select>
+            <label for="std"><strong>STD *</strong></label>
+            <?php echo form_dropdown('std', $dd_waktu, set_value('std'), 'id="std" class="span1"') ?>
         </div>
         <div class="span1">
-            <label for="etd">ETD</label>
-            <select id="etd" class="span1" name="etd">
-                <option value="" disabled="disabled">ETD</option>
-                <?php foreach ($jam as $j): ?>
-                    <?php foreach ($menit as $m): ?>
-                        <option><?php echo sprintf("%02d", $j) ?>:<?php echo sprintf("%02d", $m) ?></option>
-                    <?php endforeach; ?>
-                <?php endforeach; ?>
-            </select>
+            <label for="etd"><strong>ETD *</strong></label>
+            <?php echo form_dropdown('etd', $dd_waktu, set_value('etd'), 'id="etd" class="span1"') ?>
         </div>
         <div class="span2">
-            <label for="delay_reason">Reason Of Delay</label>
+            <label for="delay_reason"><strong>Reason Of Delay *</strong></label>
             <?php echo form_dropdown('delay_reason', $ddDelay, set_value('delay_reason')) ?>
         </div>
     </div>
     <hr/>
     <div class="row">
         <div class="span2">
-            <label for="departure_city">Departure City</label>
+            <label for="departure_city"><strong>Departure City *</strong></label>
             <?php echo form_dropdown('departure_city', $ddbandara, set_value('departure_city'), 'class="span2"') ?>
         </div>
         <div class="span2">
-            <label for="arrival_city">Arrival City</label>
+            <label for="arrival_city"><strong>Arrival City *</strong></label>
             <?php echo form_dropdown('arrival_city', $ddbandara, set_value('arrival_city'), 'class="span2"') ?>
         </div>
         <div class="span2">
-            <label for="total_pax_delay">Total Pax Delay</label>
+            <label for="total_pax_delay"><strong>Total Pax Delay *</strong></label>
             <input type="text" class="span1" id="total_pax_delay" name="total_pax_delay"  value="<?php echo set_value('total_pax_delay'); ?>" >
         </div>
         <div class="span2">
-            <label for="total_pax_transfer">Total Pax Transfer</label>
+            <label for="total_pax_transfer"><strong>Total Pax Transfer *</strong></label>
             <input type="text" class="span1" id="total_pax_transfer" name="total_pax_transfer"  value="<?php echo set_value('total_pax_delay'); ?>" >
         </div>
         <div class="span2">
-            <label for="total_pax_cancel">Total Re-route</label>
+            <label for="total_pax_cancel"><strong>Total Re-route *</strong></label>
             <input type="text" class="span1 disabled" id="total_pax_reroute" name="total_pax_reroute"  value="<?php echo set_value('total_pax_reroute'); ?>" >
         </div>
         <div class="span2">
-            <label for="total_pax_cancel">Total Pax Flight Canceled</label>
+            <label for="total_pax_cancel"><strong>Total Pax Flight Canceled *</strong></label>
             <input type="text" class="span1 disabled" disabled="disabled" id="total_pax_cancel" name="total_pax_cancel"  value="<?php echo set_value('total_pax_delay'); ?>" >
         </div>
     </div>
     <hr/>
     <div class="row">
         <div class="span4">
-            <label for="fileInput">Upload Telex File</label>
+            <label for="fileInput"><strong>Upload Telex File *</strong></label>
             <input class="input-file" id="fileInput" name="file-1" type="file">
         </div>
         <div class="span4">
-            <label for="fileInput">Upload Manifest</label>
+            <label for="fileInput"><strong>Upload Manifest *</strong></label>
             <input class="input-file" id="fileInput2" name="file-2" type="file">
         </div>
         <div class="span4">

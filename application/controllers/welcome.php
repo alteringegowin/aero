@@ -1,6 +1,5 @@
 <?php
-
-if (!defined('BASEPATH'))
+if ( !defined('BASEPATH') )
     exit('No direct script access allowed');
 
 /**
@@ -31,34 +30,24 @@ if (!defined('BASEPATH'))
 class Welcome extends CI_Controller
 {
 
-    public function delay()
+    public function index()
     {
-        $this->load->helper('file');
-        $dir = get_dir_file_info('attachments', TRUE);
-        foreach ($dir as $k => $v) {
-            xdebug($k . ' ===== ' . get_mime_by_extension($v['server_path']));
+        $row = 1;
+        if ( ($handle = fopen("data.csv", "r")) !== FALSE ) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                if ( count($data) == 3 ) {
+                    $db = array();
+                    $db['code'] = $data[0];
+                    if ( $data[2] ) {
+                        $data[2] = ' - ' . $data[2];
+                    }
+                    $db['note'] = $data[1] . $data[2];
+                    $db['airlines_id'] = 3;
+                    $this->db->insert('delay_codes',$db);
+                }
+            }
+            fclose($handle);
         }
-    }
-
-    function adduser()
-    {
-        //garuda12
-        //express12
-        //airasia12
-//        $this->load->library('ion_auth');
-//        $user_id = $this->ion_auth->register('sky1', 'sky12', 'sky1@gmail.com', array(), array(2));
-//
-//        $db['airlines_id'] = 5;
-//        $db['user_id'] = $user_id;
-//        $this->db->insert('airlines_users',$db);
-//        
-//        $user_id = $this->ion_auth->register('sky2', 'sky12', 'sky2@gmail.com', array(), array(2));
-//        $db['airlines_id'] = 5;
-//        $db['user_id'] = $user_id;
-//        $this->db->insert('airlines_users',$db);
-//        
-        $this->load->library('ion_auth');
-        $user_id = $this->ion_auth->register('ciumember', 'ciupassword', 'ciu@gmail.com', array(), array(3));
     }
 
 }
