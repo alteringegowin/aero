@@ -66,6 +66,10 @@
         <h5>Airlines</h5>
         <h6><?php echo $flight->airlines_name ?></h6>
     </div>
+    <div class="span7">
+        <h5>Notes</h5>
+        <h6><?php echo $flight->keterangan ?></h6>
+    </div>
 </div>
 
 <hr/>
