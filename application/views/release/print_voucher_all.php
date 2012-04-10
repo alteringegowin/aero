@@ -35,7 +35,7 @@
             </div>
             <div class="row">
             	<div class="span2">&nbsp;<br>Nama</div>
-                <div class="span2">&nbsp;<br>Ticket Number</div>
+                <div class="span2">&nbsp;<br>Ticket Number / PNR</div>
                 <div class="span1">&nbsp;<br>Price (IDR)</div>
                 <div class="span2">&nbsp;<br>Departure City</div>
                 <div class="span2">&nbsp;<br>Arrival City</div>

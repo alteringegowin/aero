@@ -111,7 +111,7 @@
                                 <th>Voucher Number</th>
                                 <th>Price</th>
                                 <th>Name</th>
-                                <th>Ticket</th>
+                                <th>Ticket Number/PNR</th>
                                 <th>Remark</th>
                                 <th>&nbsp;</th>
                             </tr>

@@ -21,3 +21,10 @@ $config['doc_upload_type_icon'][2] = 'lock';
 $config['doc_upload_type_icon'][3] = 'plane';
 $config['doc_upload_type_icon'][4] = 'asterisk';
 $config['doc_upload_type_icon'][5] = 'inbox';
+
+
+$config['app_flight_code_prefix'][1] = 'GA';
+$config['app_flight_code_prefix'][2] = 'TEA';
+$config['app_flight_code_prefix'][3] = 'QZ';
+$config['app_flight_code_prefix'][4] = 'TA';
+$config['app_flight_code_prefix'][5] = 'TA';

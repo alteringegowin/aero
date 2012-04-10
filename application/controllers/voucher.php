@@ -59,12 +59,16 @@ class Voucher extends CI_Controller
         $this->form_validation->set_rules('total_pax_reroute', 'Total Pax Re-route', 'trim|numeric');
         $this->form_validation->set_rules('total_pax_transfer', 'Total Pax Transfer', 'trim|numeric');
         $this->form_validation->set_rules('file-1', 'Attachment Telex', 'callback__attach_file_telex');
+        $this->form_validation->set_rules('keterangan', 'Notes', 'trim|required');
 
+        $code_prefix = config_item('app_flight_code_prefix');
+        $flight_code_prefix = $code_prefix [$this->airlines_id];
         if ($this->form_validation->run()) {
 
             $post = $this->input->post(NULL, true);
             $attachments = $this->session->userdata('attachments');
 
+            $post['flight_number'] = $flight_code_prefix . $post['flight_number'];
             $date = date('Y-m-d', strtotime($post['flight_date']));
             $dbflight['user_id'] = $this->session->userdata('user_id');
             $dbflight['flight_date'] = $date;
@@ -81,6 +85,7 @@ class Voucher extends CI_Controller
             $dbflight['total_pax_reroute'] = element('total_pax_reroute', $post, 0);
             $dbflight['total_pax_cancelled'] = element('total_pax_cancel', $post, 0);
             $dbflight['voucher_created_at'] = date('Y-m-d H:i:s');
+            $dbflight['keterangan'] = $post['keterangan'];
             $this->db->insert('vouchers', $dbflight);
             $voucher_id = $this->db->insert_id();
 
@@ -119,9 +124,9 @@ class Voucher extends CI_Controller
         }
 
 
-		if($this->airlines_id == 3){
-			$this->db->where('airlines_id',3);
-		}
+        if ($this->airlines_id == 3) {
+            $this->db->where('airlines_id', 3);
+        }
         $this->db->order_by('code');
         $codes = $this->db->get('delay_codes')->result();
         $ddDelay = array();
@@ -139,15 +144,13 @@ class Voucher extends CI_Controller
                 $dd_waktu[$t] = $t;
             endforeach;
         endforeach;
-        
-        
+
+
         $this->tpl['dd_waktu'] = $dd_waktu;
         $this->tpl['ddDelay'] = $ddDelay;
         $this->tpl['ddvoucher_type'] = $ddvoucher_type;
-
-
-
         $this->tpl['ddbandara'] = $ddbandara;
+        $this->tpl['flight_code_prefix'] = $flight_code_prefix;
         $this->tpl['content'] = $this->load->view('voucher/add', $this->tpl, true);
         $this->load->view('body', $this->tpl);
     }

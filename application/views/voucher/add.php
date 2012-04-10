@@ -24,8 +24,15 @@
             <?php echo form_dropdown('voucher_type', $ddvoucher_type, NULL, 'id="select01" class="span2"') ?>
         </div>
         <div class="span2">
-            <label for="flight_number"><strong>Flight Number *</strong></label>
-            <input type="text" class="span2" id="inpdate" name="flight_number"  value="<?php echo set_value('flight_number'); ?>" >
+            <div class="control-group">
+                <label for="flight_number"><strong>Flight Number *</strong></label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on"><?php echo $flight_code_prefix ?></span>
+                        <input type="text" class="span1" id="inpdate" name="flight_number"  value="<?php echo set_value('flight_number'); ?>" style="margin-bottom:0px;margin-left:-4px;width:120px">
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="span2">
             <label for="flight_date"><strong>Flight Date *</strong></label>
@@ -84,6 +91,13 @@
         <div class="span4">
             <label for="fileInput">Upload Movement</label>
             <input class="input-file" id="fileInput3" name="file-3" type="file">
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="span12">
+            <label for="keterangan"><strong>Notes *</strong></label>
+            <textarea class="span12" id="textarea" rows="3" name="keterangan"><?php echo set_value('keterangan')?></textarea>
         </div>
     </div>
 

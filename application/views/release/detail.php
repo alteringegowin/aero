@@ -76,7 +76,7 @@
                 <tr>
                     <th>Voucher</th>
                     <th>Name</th>
-                    <th>Ticket</th>
+                    <th>Ticket Number/PNR</th>
                     <th>Price</th>
                     <th>Created</th>
                 </tr>
