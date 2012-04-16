@@ -14,9 +14,10 @@ class Passenger_Model extends CI_Model {
         }
         $sql = "
             SELECT
-            *,ap.id
+            *,ap.id,au.fullname
             FROM aero_passengers ap
                 LEFT JOIN aero_vouchers av ON av.id=ap.voucher_id
+                LEFT JOIN aero_users au ON au.id=av.user_id
                 
             WHERE ap.voucher_id=? 
             $print_sql 

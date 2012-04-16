@@ -3,11 +3,13 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Release extends CI_Controller {
+class Release extends CI_Controller
+{
 
     protected $tpl;
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->tpl['themes'] = base_url('themes/bootstrap/') . '/';
         $this->load->helper('flight');
@@ -25,7 +27,8 @@ class Release extends CI_Controller {
         $this->breadcrumbs[] = anchor('dashboard', 'Dashboard');
     }
 
-    function index($offset=0) {
+    function index($offset=0)
+    {
         $limit = 10;
         $vouchers = $this->voucher_model->get_voucher_by_airlines($this->airlines_id, $offset);
         $pagination = create_pagination('release/index', $vouchers['total'], $limit, 3);
@@ -36,7 +39,8 @@ class Release extends CI_Controller {
         $this->load->view('body', $this->tpl);
     }
 
-    function print_voucer_all($voucher_id) {
+    function print_voucer_all($voucher_id)
+    {
         $log_text = anchor('ciu/detail/' . $voucher_id, ' print a voucher ');
         $this->log_model->save_log(3, $this->session->userdata('user_id'), $log_text);
 
@@ -46,12 +50,34 @@ class Release extends CI_Controller {
         $this->voucher_model->set_print_voucher($voucher_id);
 
         $vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
+        if ($this->airlines_id == 3) {
 
-        $this->tpl['vouchers'] = $vouchers;
-        $this->load->view('release/print_voucher_all', $this->tpl);
+            $this->load->library('Airasia_pdf');
+            $this->airasia_pdf->AliasNbPages();
+            $this->airasia_pdf->SetMargins(0.5, 0.5);
+
+            foreach ($vouchers as $r) {
+                $this->airasia_pdf->AddPage();
+                //$this->airasia_pdf->guide();
+                $this->airasia_pdf->SetFont('Times', '', 10);
+                $this->airasia_pdf->loadData($r);
+                $this->airasia_pdf->atas();
+                $this->airasia_pdf->data();
+                $this->airasia_pdf->ln();
+                $this->airasia_pdf->ln();
+                $this->airasia_pdf->notes();
+            }
+
+            $this->airasia_pdf->Output('pdf.pdf', 'I');
+        } else {
+
+            $this->tpl['vouchers'] = $vouchers;
+            $this->load->view('release/print_voucher_all', $this->tpl);
+        }
     }
 
-    function print_list($voucher_id) {
+    function print_list($voucher_id)
+    {
 
         $flight = $this->voucher_model->get($voucher_id);
         $passengers = $this->passenger_model->get_passengers($voucher_id);
@@ -65,7 +91,8 @@ class Release extends CI_Controller {
         $this->tpl['content'] = $this->load->view('release/print_list', $this->tpl);
     }
 
-    function detail($voucher_id) {
+    function detail($voucher_id)
+    {
         $flight = $this->voucher_model->get($voucher_id);
         $passengers = $this->passenger_model->get_passengers($voucher_id);
 
@@ -79,7 +106,8 @@ class Release extends CI_Controller {
         $this->load->view('body', $this->tpl);
     }
 
-    function import($voucher_id) {
+    function import($voucher_id)
+    {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('userfile2', 'File Upload', 'callback__upload_data');
         if ($this->form_validation->run()) {
@@ -90,7 +118,7 @@ class Release extends CI_Controller {
 
             $log_text = anchor('release/detail/' . $voucher_id, ' import data pasenger ');
             $this->log_model->save_log(2, $this->session->userdata('user_id'), $log_text);
-            
+
             $this->tpl['is_frozzen'] = true;
         }
 
@@ -115,7 +143,8 @@ class Release extends CI_Controller {
         $this->load->view('body', $this->tpl);
     }
 
-    function ajax_manifest($id) {
+    function ajax_manifest($id)
+    {
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('name', 'name', 'trim|required');
@@ -135,7 +164,8 @@ class Release extends CI_Controller {
         echo json_encode($json);
     }
 
-    function _upload_data() {
+    function _upload_data()
+    {
         $config['upload_path'] = './uploads/passanger/';
         $config['allowed_types'] = 'csv';
         $config['allowed_types'] = 'csv';
@@ -173,7 +203,8 @@ class Release extends CI_Controller {
         }
     }
 
-    function download($voucher_id) {
+    function download($voucher_id)
+    {
         $this->load->helper('download');
         $passengers = $this->passenger_model->get_passengers($voucher_id);
         $str[] = 'VOUCHER;PRICE;NAME;TICKET;REMARK';
