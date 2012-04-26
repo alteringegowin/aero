@@ -13,10 +13,10 @@ class Auth extends CI_Controller {
     }
 
     function create() {
-        $username = 'maunder';
-        $password = 'password';
+        $username = 'adminciu';
+        $password = 'adminciu';
         $email = '';
-        $additional_data = array('fullname'=>'TRANS AVIATION MAUNDER');
+        $additional_data = array('fullname'=>'Admin CIU');
         $this->ion_auth->register($username, $password, $email, $additional_data);
     }
 

@@ -5,35 +5,34 @@
         <table class="table table-striped table-bordered table-condensed kecil">
             <thead>
                 <tr>
-                    <th style="font-align:'center';">Req at</th>
+                    <th style="font-align:'center';">Airlines</th>
                     <th>Flight Number</th>
-                    <th>Departure</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Voucher</th>
-                    <th>Verifications Status</th>
-                    <th>Docs</th>
+                    <th>Flight Status</th>
+                    <th>Delay Reason</th>
+                    <th>Voucher Status</th>
+                    <th>Request Date</th>
+                    <th>Request by</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($vouchers['data'] as $r): ?>
                     <tr style="">
-                        <td style="width:15%;"><p><small><?php echo $r->voucher_created_at ?></small></td>
+                        <td style="width:15%;"><p><?php echo $r->airlines_name ?></td>
                         <td>
-                            <a href="<?php echo site_url('ciu/detail/' . $r->id) ?>"><?php echo $r->flight_number; ?></a>
+                            <h6><i class="icon-plane"></i> <?php echo anchor('ciu/detail/' . $r->id, $r->flight_number) ?></h6>
+                            <p>
+                                <small>DATE: <?php echo date('l,j F Y', strtotime($r->flight_date)) ?></small><br/>
+                                <small>DEST: <?php echo $r->departure_city ?> - <?php echo $r->arrival_city ?></small><br/>
+                                <small>STD/ETD: <?php echo $r->flight_std ?> - <?php echo $r->flight_etd ?></small><br/>
+                            </p>
+
                         </td>
-                        <td style="width:15%;"><?php echo $r->departure_city ?> - <?php echo $r->arrival_city ?></td>
-                        <td style="width:10%;"><p><?php echo $r->flight_date ?></p></td>
-                        <td><?php echo $r->voucher_type ?> </td>
-                        <td><?php voucher_status($r) ?> </td>
-                        <td><?php the_verification_form_status($r, 2) ?></td>
-                        <td>
-                            <?php if ($r->voucher_verified == 1) : ?>
-                                <?php the_index_attachment_button($r) ?>
-                            <?php else : ?>
-                                &nbsp;
-                            <?php endif; ?>
-                        </td>
+                        <td class="span1"><?php echo $r->voucher_type ?> </td>
+                        <td class="span1"><?php echo $r->delay_reason ?></td>
+                        <td class="span1"><?php voucher_status($r) ?> </td>
+
+                        <td style="width:80px"><?php echo $r->voucher_created_at ?></td>
+                        <td style="width:100px"><?php the_user($r->user_id) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -41,96 +40,3 @@
         <?php echo $pagination ?>
     </div>
 </div>
-
-<div class="modal" id="myDoc1">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        <h3>Document Verifications : DOC KRONOLOGIS</h3>
-    </div>
-    <div class="modal-body">
-        <p>This Document is send Online.</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-        <a href="#" class="btn btn-primary">Download</a>
-    </div>
-</div>
-
-<div class="modal" id="myDoc2">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        <h3>Document Verifications : DOC TELEX</h3>
-    </div>
-    <div class="modal-body">
-        <p>This Document is send Offline by POST</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-    </div>
-</div>
-
-<div class="modal" id="myDoc3">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        <h3>Document Verifications : DOC MANIFEST</h3>
-    </div>
-    <div class="modal-body">
-        <p>This Document is send Online</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-        <a href="#" class="btn btn-primary">Download</a>
-    </div>
-</div>
-
-<div class="modal" id="myDoc4">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        <h3>Document Verifications : DOC FLIGHT-MOVEMENT</h3>
-    </div>
-    <div class="modal-body">
-        <p>This Document is send Online.</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-        <a href="#" class="btn btn-primary">Download</a>
-    </div>
-</div>
-
-
-<div class="modal" id="myDoc5">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        <h3>Document Verifications : DOC ABSENSI-VOUCHER</h3>
-    </div>
-    <div class="modal-body">
-        <p>This Document is send Online.</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-        <a href="#" class="btn btn-primary">Download</a>
-    </div>
-</div>
-
-<div class="modal" id="myDoc6">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        <h3>Document Verifications : DOC OTHERS</h3>
-    </div>
-    <div class="modal-body">
-        <p>This Document is send Online.</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-        <a href="#" class="btn btn-primary">Download</a>
-    </div>
-</div>
-
-<script type="text/javascript">
-    $('#myDoc1').hide();
-    $('#myDoc2').hide();
-    $('#myDoc3').hide();
-    $('#myDoc4').hide();
-    $('#myDoc5').hide();
-    $('#myDoc6').hide();
-</script>
