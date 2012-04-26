@@ -49,13 +49,15 @@ class Release extends CI_Controller
         $this->log_model->save_log(2, $this->session->userdata('user_id'), $log_text);
         $this->voucher_model->set_print_voucher($voucher_id);
 
-        $vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
+        
+        
         if ($this->airlines_id == 3) {
 
             $this->load->library('Airasia_pdf');
             $this->airasia_pdf->AliasNbPages();
             $this->airasia_pdf->SetMargins(0.5, 0.5);
 
+        	$vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
             foreach ($vouchers as $r) {
                 $this->airasia_pdf->AddPage();
                 //$this->airasia_pdf->guide();
@@ -69,8 +71,13 @@ class Release extends CI_Controller
             }
 
             $this->airasia_pdf->Output('pdf.pdf', 'I');
-        } else {
-
+        } elseif($this->airlines_id == 1){
+        	$vouchers = $this->passenger_model->get_passengers_garuda($voucher_id, 'print');
+            $this->tpl['vouchers'] = $vouchers;
+            $this->load->view('release/print_voucher_all', $this->tpl);
+        }else {
+			
+        	$vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
             $this->tpl['vouchers'] = $vouchers;
             $this->load->view('release/print_voucher_all', $this->tpl);
         }
