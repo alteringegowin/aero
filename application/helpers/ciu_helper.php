@@ -1,6 +1,7 @@
 <?php
 
-function voucher_status($r) {
+function voucher_status($r)
+{
     switch ($r->voucher_status) {
         default:
         case 0:
@@ -15,13 +16,17 @@ function voucher_status($r) {
     }
 }
 
-function the_verification_form_status($r, $mode=0) {
+function the_verification_form_status($r, $mode=0)
+{
     switch ($r->voucher_verified) {
         case 1:
             echo '<strong class="label label-success">verified</strong>';
             break;
         case 2:
             echo '<strong class="label label-important">rejected</strong>';
+            break;
+        case 0:
+            echo '<strong class="label label-important">on progress</strong>';
             break;
         default :
             if (!$mode) {
@@ -31,7 +36,8 @@ function the_verification_form_status($r, $mode=0) {
     }
 }
 
-function the_verification_form_link($r) {
+function the_verification_form_link($r)
+{
     switch ($r->voucher_verified) {
         case 1:
             echo anchor(site_url('ciu/verification/' . $r->id . '/2'), 'set to Reject?');
@@ -45,7 +51,8 @@ function the_verification_form_link($r) {
     }
 }
 
-function the_index_attachment_button($r) {
+function the_index_attachment_button($r)
+{
     $ci = get_instance();
     $a = $ci->voucher_model->get_attachment($r->id);
 

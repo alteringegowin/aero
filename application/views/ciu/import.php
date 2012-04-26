@@ -57,7 +57,7 @@
             <div class="span4">
                 <div class="alert alert-info">
                     <h4 class="alert-heading">2. Entry Pax Data According the CSV Files!</h4>
-                    <p>Please <a href="<?php echo site_url('flight/download/upload') ?>">download the Voucher CSV file</a>.</p>
+                    <p>All the data is already prepare, you just have to enter passenger name, passenger ticket number and the remark. Passenger name and ticket is mandatory field</p>
                 </div>
             </div>
 
@@ -111,7 +111,7 @@
                                 <th>Voucher Number</th>
                                 <th>Price</th>
                                 <th>Name</th>
-                                <th>Ticket</th>
+                                <th>Ticket Number/PNR</th>
                                 <th>Remark</th>
                                 <th>&nbsp;</th>
                             </tr>
@@ -119,7 +119,10 @@
                         <tbody>
                             <?php foreach ($passengers as $r): ?>
                                 <tr id="row-<?php echo $r->id ?>" class="cc">
-                                    <td><?php echo $r->voucher_code ?></td>
+                                    <td>
+                                        <?php echo $r->voucher_code ?>
+                                        <span class="error-<?php echo $r->id ?>"></span>
+                                    </td>
                                     <td><?php echo number_format($r->price) ?></td>
                                     <td><input type="text" class="input-small" id="name-<?php echo $r->id ?>" name="name-<?php echo $r->id ?>" placeholder="name.." value="<?php echo $r->passenger_name ?>"></td>
                                     <td><input type="text" class="input-small" id="ticket-<?php echo $r->id ?>" name="ticket-<?php echo $r->id ?>" placeholder="ticket.." value="<?php echo $r->passenger_ticket ?>"></td>

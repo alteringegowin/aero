@@ -10,6 +10,7 @@
                     <th>Flight Status</th>
                     <th>Delay Reason</th>
                     <th>Voucher Status</th>
+                    <th>Voucher Status</th>
                     <th>Request Date</th>
                     <th>Request by</th>
                 </tr>
@@ -30,6 +31,7 @@
                         <td class="span1"><?php echo $r->voucher_type ?> </td>
                         <td class="span1"><?php echo $r->delay_reason ?></td>
                         <td class="span1"><?php voucher_status($r) ?> </td>
+                        <td class="span1"><?php the_verification_form_status($r) ?> </td>
 
                         <td style="width:80px"><?php echo $r->voucher_created_at ?></td>
                         <td style="width:100px"><?php the_user($r->user_id) ?></td>

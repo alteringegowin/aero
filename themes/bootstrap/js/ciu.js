@@ -34,5 +34,41 @@
             
             }
         });
+        
+        
+        $(".save-manifest").click(function(){
+            var id = $(this).attr('rel-data');
+            var url = $(this).attr('href');
+            
+            
+            
+            var name = $("#name-"+id).val();
+            var ticket = $("#ticket-"+id).val();
+            var remark = $("#remark-"+id).val();
+            var data = {
+                name: name,
+                ticket: ticket,
+                remark: remark
+            };
+
+            $.post(url,data,function(r){
+                if(r.success){
+                    $(this).addClass("disabled");
+                    $(this).html("saved");
+                    $(".cc").removeClass('alert-error');
+                    $("#row-"+id).addClass('alert-success');
+                    $(".error-"+id).html('&nbsp;');
+                    
+                }else{
+                    $(".error-"+id).html('<p class="alert-warning"><small>'+r.data+'</small></p>');
+                    $(".cc").removeClass('alert-error');
+                    $("#row-"+id).addClass('alert-error');
+                }
+            },'json')
+            
+            return false;
+            
+        })
+        
     });
 }(window.jQuery)
