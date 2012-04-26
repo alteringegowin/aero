@@ -54,7 +54,7 @@
     <div class="span4">&nbsp;</div>
 
     <div class="span3">
-        <h5>Verifications Forms :</h5>
+        <h5>Request Status :</h5>
         <p><?php the_verification_form_status($flight) ?></p>
         <p><a href="<?php echo site_url('ciu/import/'.$flight->id)?>" class="btn btn-info">Upload data PAX</a></p>
     </div>

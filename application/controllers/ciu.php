@@ -92,7 +92,10 @@ class Ciu extends CI_Controller
         $this->load->library('form_validation');
         $this->form_validation->set_rules('userfile2', 'File Upload', 'callback__upload_data');
         if ($this->form_validation->run()) {
-
+            $this->db->where('id',$voucher_id);
+            $this->db->set('voucher_verified',1);
+            $this->db->update('vouchers');
+            
             $log_text = anchor('ciu/detail/' . $voucher_id, ' import data pasenger ');
             $this->log_model->save_log(3, $this->session->userdata('user_id'), $log_text);
 
@@ -123,8 +126,7 @@ class Ciu extends CI_Controller
         $this->tpl['content'] = $this->load->view('ciu/import', $this->tpl, true);
         $this->load->view('body', $this->tpl);
     }
-    
-    
+
     function ajax_manifest($id)
     {
 
@@ -148,10 +150,10 @@ class Ciu extends CI_Controller
 
     function _upload_data()
     {
+        $this->load->helper('array');
         $config['upload_path'] = './uploads/passanger/';
-        $config['allowed_types'] = 'csv';
-        $config['allowed_types'] = 'csv';
-        $config['max_size'] = '1000';
+        $config['allowed_types'] = 'xls';
+        $config['max_size'] = '0';
 
         $this->load->library('upload', $config);
 
@@ -161,26 +163,26 @@ class Ciu extends CI_Controller
             return FALSE;
         } else {
             $data = $this->upload->data();
-            $fopen = fopen($data['full_path'], 'r');
-            $i = 0;
-            $sudah_ada = 0;
-            $sukses = 0;
-            $i = 0;
-            while (($data = fgetcsv($fopen, 1000, ";")) !== FALSE) {
-                if ($i) {
-                    if (count($data) == 5) {
-                        if (isset($data[0]) && $data[0]) {
-                            $db['passenger_name'] = $data[2];
-                            $db['passenger_ticket'] = $data[3];
-                            $db['passanger_remark'] = $data[4];
-                            $this->db->where('voucher_code', $data[0]);
-                            $this->db->where('voucher_id', $this->uri->segment(3, 0));
-                            $this->db->update('passengers', $db);
-                        }
-                    }
-                }
-                $i++;
+
+            include APPPATH . 'third_party/PHPExcel.php';
+
+            $objReader = PHPExcel_IOFactory::createReader('Excel2007');
+            $objReader->setReadDataOnly(true);
+            $objPHPExcel = $objReader->load($data['full_path']);
+            $objWorksheet = $objPHPExcel->getActiveSheet();
+
+            $highestRow = $objWorksheet->getHighestRow();
+            $sheetData = $objPHPExcel->getActiveSheet()->rangeToArray('A2:E' . $highestRow, '', false, false, false);
+            foreach ($sheetData as $data) {
+                $db = array();
+                $db['passenger_name'] = element(2, $data,'');
+                $db['passenger_ticket'] = element(3, $data,'');
+                $db['passanger_remark'] = element(4, $data,'');
+                $this->db->where('voucher_code', $data[0]);
+                $this->db->where('voucher_id', $this->uri->segment(3, 0));
+                $this->db->update('passengers', $db);
             }
+            
             return TRUE;
         }
     }
@@ -188,14 +190,46 @@ class Ciu extends CI_Controller
     function download($voucher_id)
     {
         $this->load->helper('download');
+        $this->load->helper('file');
         $passengers = $this->passenger_model->get_passengers($voucher_id);
-        $str[] = 'VOUCHER;PRICE;NAME;TICKET;REMARK';
+
+        include APPPATH . 'third_party/PHPExcel.php';
+        include APPPATH . 'third_party/PHPExcel/Writer/Excel2007.php';
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $objPHPExcel->getActiveSheet();
+        $objPHPExcel->getActiveSheet()->SetCellValue('A1', 'VOUCHER CODE');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B1', 'PRICE');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1', 'NAME');
+        $objPHPExcel->getActiveSheet()->SetCellValue('D1', 'TICKET');
+        $objPHPExcel->getActiveSheet()->SetCellValue('E1', 'REMARK');
+
+        $i = 1;
         foreach ($passengers as $v) {
-            $str[] = $v->voucher_code . ';' . $v->price . ';;;;';
+            $i++;
+            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $i, $v->voucher_code);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $i, $v->price);
         }
 
-        $data = implode("\n", $str);
-        force_download('VOUCHER.CSV', $data);
+        $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+        // We'll be outputting an excel file
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="file.xls"');
+        $objWriter->save('php://output');
+    }
+
+    function readxls($file)
+    {
+
+
+        die;
+    }
+
+    function writexls()
+    {
+        
     }
 
 }

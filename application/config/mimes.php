@@ -57,7 +57,7 @@ $mimes = array('hqx' => array('application/mac-binhex40', 'application/mac-binhe
     'smi' => 'application/smil',
     'smil' => 'application/smil',
     'mif' => 'application/vnd.mif',
-    'xls' => array('application/excel', 'application/vnd.ms-excel', 'application/msexcel'),
+    'xls' => array('application/excel', 'application/vnd.ms-excel', 'application/msexcel','application/zip'),
     'ppt' => array('application/powerpoint', 'application/vnd.ms-powerpoint'),
     'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     'wbxml' => 'application/wbxml',

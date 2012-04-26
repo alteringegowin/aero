@@ -20,7 +20,7 @@ function the_verification_form_status($r, $mode=0)
 {
     switch ($r->voucher_verified) {
         case 1:
-            echo '<strong class="label label-success">verified</strong>';
+            echo '<strong class="label label-success">processed</strong>';
             break;
         case 2:
             echo '<strong class="label label-important">rejected</strong>';
