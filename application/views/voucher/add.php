@@ -67,7 +67,7 @@
         </div>
         <div class="span2">
             <label for="total_pax_transfer"><strong>Total Pax Transfer *</strong></label>
-            <input type="text" class="span1" id="total_pax_transfer" name="total_pax_transfer"  value="<?php echo set_value('total_pax_delay'); ?>" >
+            <input type="text" class="span1" id="total_pax_transfer" name="total_pax_transfer"  value="<?php echo set_value('total_pax_transfer'); ?>" >
         </div>
         <div class="span2">
             <label for="total_pax_cancel"><strong>Total Re-route *</strong></label>
