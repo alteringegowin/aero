@@ -4,9 +4,12 @@
 <div class="row">
     <div class="span4"><h3>Passanger Data</h3></div>
     <div class="span8" style="text-align: right">
-        <a class="btn btn-success" href="<?php echo site_url('release/import/' . $flight->id) ?>"><i class="icon-user icon-white"></i> Entry Data Passenger</a>
-        <a target="_blank" class="btn btn-info" href="<?php echo site_url('release/print_list/' . $flight->id) ?>"><i class="icon-list-alt icon-white"></i> Print This Page</a>
-        <a data-toggle="modal" href="#myModal" class="btn btn-danger print-voucher"><i class="icon-print icon-white"></i> Print All Vouchers</a>
+        <?php if ($flight->voucher_verified): ?>
+            <a target="_blank" class="btn btn-info" href="<?php echo site_url('release/print_list/' . $flight->id) ?>"><i class="icon-list-alt icon-white"></i> Print This Page</a>
+            <a data-toggle="modal" href="#myModal" class="btn btn-danger print-voucher"><i class="icon-print icon-white"></i> Print All Vouchers</a>
+        <?php else: ?>
+            <h3><span  class="label label-important">ON PROGRESS....</span></h3>
+        <?php endif; ?>
     </div>
 </div>
 

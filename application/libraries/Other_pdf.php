@@ -2,18 +2,19 @@
 
 require_once APPPATH . 'third_party/fpdf/fpdf.php';
 
-class Airasia_pdf extends FPDF
+class Other_pdf extends FPDF
 {
 
     protected $width;
     protected $height;
     protected $dbdata;
+    protected $logo;
 
     function __construct()
     {
-        $this->FPDF('L', 'cm', array(7.8, 24.5));
+        $this->FPDF('P', 'cm', 'A4');
 
-        $this->width = 1.91;
+        $this->width = 1.65;
         $this->height = 0.5;
     }
 
@@ -29,6 +30,11 @@ class Airasia_pdf extends FPDF
             $this->cell($this->width, $this->height, $i + 1, 1, 0);
         }
         $this->ln();
+    }
+
+    function set_logo($t)
+    {
+        $this->logo = str_replace('.png', '-bw.png', $t);
     }
 
     function atas()
@@ -72,14 +78,21 @@ class Airasia_pdf extends FPDF
 
         $this->ln();
 
-        $this->cell($w2, $this->height, $this->dbdata->passenger_name, 1, 0);
-        $this->cell($w2, $this->height, $this->dbdata->passenger_ticket, 1, 0,'R');
-        $this->cell($w, $this->height, number_format($this->dbdata->price), 1, 0,'R');
+        $this->cell($w2, $this->height, character_limiter($this->dbdata->passenger_name,15,'.'), 1, 0);
+        $this->cell($w2, $this->height, $this->dbdata->passenger_ticket, 1, 0, 'R');
+        $this->cell($w, $this->height, number_format($this->dbdata->price), 1, 0, 'R');
         $this->cell($w2, $this->height, $this->dbdata->departure_city, 1, 0);
         $this->cell($w2, $this->height, $this->dbdata->arrival_city, 1, 0);
         $this->cell($w, $this->height, $this->dbdata->delay_reason, 1, 0);
         $this->cell($w2, $this->height, $this->dbdata->fullname, 1, 0);
         $this->SetFont('Times', '', 10);
+    }
+
+    function marker()
+    {
+        $this->ln();
+        $this->cell(0, $this->height, '', 'T', 0);
+        $this->ln();
     }
 
     function notes()
@@ -96,10 +109,10 @@ b. Penukaran Voucher dapat dilakukan di Bank Mandiri terdekat dengan membawa ide
         $this->MultiCell($this->width * 5, 0.35, $notes, 0, 'L');
         $this->SetFont('Times', '', 10);
 
-        $this->SetY($y);
-        $this->SetX($x);
+        //$this->SetY($y);
+        //$this->SetX($x);
 
-        //$this->Image('themes/bootstrap/img/logo-airasia-bw.png', $x, $y, $this->width * 2);
+        $this->Image('themes/bootstrap/img/' . $this->logo, $x, $y, $this->width * 2);
     }
 
 }

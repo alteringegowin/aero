@@ -41,6 +41,7 @@ class Release extends CI_Controller
 
     function print_voucer_all($voucher_id)
     {
+        $this->load->helper('text');
         $log_text = anchor('ciu/detail/' . $voucher_id, ' print a voucher ');
         $this->log_model->save_log(3, $this->session->userdata('user_id'), $log_text);
 
@@ -49,15 +50,15 @@ class Release extends CI_Controller
         $this->log_model->save_log(2, $this->session->userdata('user_id'), $log_text);
         $this->voucher_model->set_print_voucher($voucher_id);
 
-        
-        
+
+
         if ($this->airlines_id == 3) {
 
             $this->load->library('Airasia_pdf');
             $this->airasia_pdf->AliasNbPages();
             $this->airasia_pdf->SetMargins(0.5, 0.5);
 
-        	$vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
+            $vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
             foreach ($vouchers as $r) {
                 $this->airasia_pdf->AddPage();
                 //$this->airasia_pdf->guide();
@@ -71,15 +72,12 @@ class Release extends CI_Controller
             }
 
             $this->airasia_pdf->Output('pdf.pdf', 'I');
-        } elseif($this->airlines_id == 1){
-        	$vouchers = $this->passenger_model->get_passengers_garuda($voucher_id, 'print');
-            $this->tpl['vouchers'] = $vouchers;
-            $this->load->view('release/print_voucher_all', $this->tpl);
-        }else {
-			
-        	$vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
-            $this->tpl['vouchers'] = $vouchers;
-            $this->load->view('release/print_voucher_all', $this->tpl);
+        } elseif ($this->airlines_id == 1) {
+            $vouchers = $this->passenger_model->get_passengers_garuda($voucher_id, 'print');
+            $this->checkpdf($voucher_id, $vouchers);
+        } else {
+            $vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
+            $this->checkpdf($voucher_id, $vouchers);
         }
     }
 
@@ -113,5 +111,42 @@ class Release extends CI_Controller
         $this->load->view('body', $this->tpl);
     }
 
+    function checkpdf($voucher_id, $data)
+    {
+
+        $this->db->where('id', $this->airlines_id);
+        $airlines = $this->db->get('airlines')->row();
+
+        $this->load->library('Other_pdf');
+        $this->other_pdf->AliasNbPages();
+        $this->other_pdf->SetMargins(0.5, 0.5);
+        $this->other_pdf->set_Logo($airlines->airlines_logo);
+
+        $vouchers = $data;
+        $i = 4;
+        $this->other_pdf->AddPage();
+        foreach ($vouchers as $r) {
+            if (!$i) {
+                $i = 3;
+                $this->other_pdf->AddPage();
+            } else {
+                $i--;
+            }
+            //
+            //$this->other_pdf->guide();
+            $this->other_pdf->SetFont('Times', '', 10);
+            $this->other_pdf->loadData($r);
+            $this->other_pdf->atas();
+            $this->other_pdf->data();
+            $this->other_pdf->ln();
+            $this->other_pdf->ln();
+            $this->other_pdf->notes();
+            $this->other_pdf->ln();
+            $this->other_pdf->marker();
+            $this->other_pdf->ln();
+        }
+
+        $this->other_pdf->Output('pdf.pdf', 'I');
+    }
 
 }
