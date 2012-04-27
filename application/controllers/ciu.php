@@ -34,7 +34,7 @@ class Ciu extends CI_Controller
         $pagination = create_pagination('ciu/index', $vouchers['total'], $limit, 3);
         $this->tpl['vouchers'] = $vouchers;
         $this->tpl['pagination'] = $pagination;
-        $this->tpl['content'] = $this->load->view('ciu/index', $this->tpl, true);
+        $this->tpl['content'] = $this->load->view('progress/index', $this->tpl, true);
         $this->load->view('body', $this->tpl);
     }
 
