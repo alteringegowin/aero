@@ -26,18 +26,15 @@ function option_status($r)
 function the_voucher_status($r)
 {
     switch ($r->voucher_status) {
+        default :
         case 0:
             echo '<strong class="label label-important">on progress</strong>';
             break;
         case 2:
             echo '<strong class="label label-success">printed</strong>';
             break;
-        default :
-            if ($r->voucher_verified) {
-                echo '<strong class="label label-warning">ready for print</strong>';
-            } else {
-                echo '<strong class="label label-important">on progress</strong>';
-            }
+        case 3:
+            echo '<strong class="label label-warning">ready to print</strong>';
             break;
     }
 }

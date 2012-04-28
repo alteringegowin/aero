@@ -88,6 +88,12 @@ class Dashboard extends CI_Controller
         $this->db->order_by('id');
         $dbairlines = $this->db->get('airlines')->result();
 
+        $this->load->model('statistic_model');
+        $pie = $this->statistic_model->all_voucher_pie();
+        $pie_type = $this->statistic_model->pie_voucher_type();
+
+        $this->tpl['pie'] = $pie;
+        $this->tpl['pie_type'] = $pie_type;
         $this->tpl['logs'] = $logs;
         $this->tpl['dbairlines'] = $dbairlines;
         $this->tpl['user_data'] = $this->session->userdata('user_data');

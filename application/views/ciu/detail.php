@@ -56,7 +56,7 @@
     <div class="span3">
         <h5>Request Status :</h5>
         <p><?php the_verification_form_status($flight) ?></p>
-        <p><a href="<?php echo site_url('ciu/import/'.$flight->id)?>" class="btn btn-info">Upload data PAX</a></p>
+        <p><?php the_verification_form_link($flight) ?></p>
     </div>
 </div>
 <div class="row">
@@ -76,13 +76,14 @@
                 </div>
             <?php endfor; ?>
         </div>
-
         <div class="row" style="padding:8px 0;">
             <?php for ($i = 3; $i < 6; $i++): ?>
                 <div class="span4">
                     <h6><?php echo $doc_type[$i] ?></h6>
                     <?php if (isset($documents[$i]) && $documents[$i]->offline_mode) : ?>
                         <span class="label">offline doc via post</span>
+                    <?php elseif (isset($documents[$i]) && $documents[$i]->attachment_file): ?>
+                        <a class="btn btn-success" href="<?php echo site_url('ciu/attachment/' . $flight->id . '/' . $i) ?>"><i class="icon-download icon-white"></i> download</a>
                     <?php else: ?>
                         <span class="label label-important">not set yet</span>
                     <?php endif; ?>

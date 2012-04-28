@@ -84,6 +84,7 @@
                                 <th>Ticket Number/PNR</th>
                                 <th>Price</th>
                                 <th>Created</th>
+                                <th>Remark</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,6 +95,7 @@
                                     <td><?php echo $r->passenger_ticket ?></td>
                                     <td class="span2"><?php echo number_format($r->price) ?></td>
                                     <td class="span2"><?php echo date('Y-m-d H:i', strtotime($r->voucher_created_at)) ?></td>
+                                    <td class="span2">&nbsp;</td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

@@ -34,7 +34,7 @@ class Ciu extends CI_Controller
         $pagination = create_pagination('ciu/index', $vouchers['total'], $limit, 3);
         $this->tpl['vouchers'] = $vouchers;
         $this->tpl['pagination'] = $pagination;
-        $this->tpl['content'] = $this->load->view('progress/index', $this->tpl, true);
+        $this->tpl['content'] = $this->load->view('ciu/index', $this->tpl, true);
         $this->load->view('body', $this->tpl);
     }
 
@@ -50,6 +50,7 @@ class Ciu extends CI_Controller
         $passengers = $this->passenger_model->get_passengers($voucher_id);
         $documents = $this->voucher_model->get_attachment($voucher_id);
         $doc_type = config_item('doc_upload_type');
+
 
         $this->tpl['doc_type'] = $doc_type;
         $this->tpl['documents'] = $documents;
@@ -92,10 +93,10 @@ class Ciu extends CI_Controller
         $this->load->library('form_validation');
         $this->form_validation->set_rules('userfile2', 'File Upload', 'callback__upload_data');
         if ($this->form_validation->run()) {
-            $this->db->where('id',$voucher_id);
-            $this->db->set('voucher_verified',1);
+            $this->db->where('id', $voucher_id);
+            $this->db->set('voucher_status', 3);
             $this->db->update('vouchers');
-            
+
             $log_text = anchor('ciu/detail/' . $voucher_id, ' import data pasenger ');
             $this->log_model->save_log(3, $this->session->userdata('user_id'), $log_text);
 
@@ -175,14 +176,14 @@ class Ciu extends CI_Controller
             $sheetData = $objPHPExcel->getActiveSheet()->rangeToArray('A2:E' . $highestRow, '', false, false, false);
             foreach ($sheetData as $data) {
                 $db = array();
-                $db['passenger_name'] = element(2, $data,'');
-                $db['passenger_ticket'] = element(3, $data,'');
-                $db['passanger_remark'] = element(4, $data,'');
+                $db['passenger_name'] = element(2, $data, '');
+                $db['passenger_ticket'] = element(3, $data, '');
+                $db['passanger_remark'] = element(4, $data, '');
                 $this->db->where('voucher_code', $data[0]);
                 $this->db->where('voucher_id', $this->uri->segment(3, 0));
                 $this->db->update('passengers', $db);
             }
-            
+
             return TRUE;
         }
     }
@@ -214,10 +215,11 @@ class Ciu extends CI_Controller
         }
 
         $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
-        // We'll be outputting an excel file
-        header('Content-type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment; filename="file.xls"');
-        $objWriter->save('php://output');
+        $objWriter->save('attachments/file-' . $voucher_id . '.xls');
+        $data = file_get_contents('attachments/file-' . $voucher_id . '.xls'); // Read the file's contents
+        $name = 'pax-' . $voucher_id . '.xls';
+
+        force_download($name, $data);
     }
 
     function readxls($file)

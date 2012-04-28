@@ -82,7 +82,8 @@
                                     <?php endif; ?>
 
                                     <?php if ($this->session->userdata('group') == 'ciu'): ?>
-                                        <li class="<?php echo get_current_class('ciu', 1) ?>"><?php echo anchor('ciu', 'Progress Monitoring') ?></li>
+                                        <li class="<?php echo get_current_class('ciu', 1) ?>"><?php echo anchor('ciu', 'Release') ?></li>
+                                        <li class="<?php echo get_current_class('progress', 1) ?>"><?php echo anchor('progress', 'Progress Monitoring') ?></li>
                                     <?php endif; ?>
                                     <li><a href="<?php echo site_url('logout') ?>">Logout</a></li>
                                 </ul>

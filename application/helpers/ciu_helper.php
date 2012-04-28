@@ -5,13 +5,16 @@ function voucher_status($r)
     switch ($r->voucher_status) {
         default:
         case 0:
-            echo '<span class="label label-success">new</span>';
+            echo '<span class="label label-info">new</span>';
             break;
         case 1:
-            echo '';
+            echo '<span class="label label-warning">request</span>';
             break;
         case 2:
-            echo '<span class="label label-warning">printed</span>';
+            echo '<span class="label label-success">printed</span>';
+            break;
+        case 3:
+            echo '<span class="label label-info">ready</span>';
             break;
     }
 }
@@ -20,13 +23,13 @@ function the_verification_form_status($r, $mode=0)
 {
     switch ($r->voucher_verified) {
         case 1:
-            echo '<strong class="label label-success">processed</strong>';
+            echo '<strong class="label label-success">Approved</strong>';
             break;
         case 2:
             echo '<strong class="label label-important">rejected</strong>';
             break;
         case 0:
-            echo '<strong class="label label-important">on progress</strong>';
+            echo '<strong class="label label-warning">on progress</strong>';
             break;
         default :
             if (!$mode) {
@@ -55,7 +58,6 @@ function the_index_attachment_button($r)
 {
     $ci = get_instance();
     $a = $ci->voucher_model->get_attachment($r->id);
-
     $doc_type = config_item('doc_upload_type');
     foreach ($doc_type as $k => $v) {
         if (isset($a[$k]) && $a[$k]->offline_mode) {
