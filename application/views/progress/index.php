@@ -9,9 +9,9 @@
                     <th>Flight Number</th>
                     <th>Departure</th>
                     <th>Date</th>
+                    <th>Voucher Type</th>
                     <th>Status Voucher</th>
                     <th>Status Document</th>
-                    <th>Verifications Status</th>
                     <th>Docs</th>
                 </tr>
             </thead>
