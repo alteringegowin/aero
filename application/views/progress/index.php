@@ -10,9 +10,10 @@
                     <th>Departure</th>
                     <th>Date</th>
                     <th>Voucher Type</th>
-                    <th>Status Voucher</th>
-                    <th>Status Document</th>
+                    <th>Voucher Status </th>
+                    <th>Document Status </th>
                     <th>Docs</th>
+                    <th>Claim Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,10 +27,12 @@
                         <td style="width:10%;"><p><?php echo $r->flight_date ?></p></td>
                         <td><?php echo $r->voucher_type ?> </td>
                         <td><?php voucher_status($r) ?> </td>
-                        <td><?php the_verification_form_status($r, 2) ?></td>
-                        <td>
+                        <td><?php document_status($r->id) ?> </td>
+                        <td class="span4">
                             <?php the_index_attachment_button($r) ?>
                         </td>
+                        <td><?php the_verification_form_status($r, 2) ?></td>
+
                     </tr>
                 <?php endforeach; ?>
             </tbody>

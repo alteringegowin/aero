@@ -1,5 +1,19 @@
 <?php
 
+function document_status($voucher_id)
+{
+
+    $ci = get_instance();
+    $ci->db->where('voucher_id', $voucher_id);
+    $row = $ci->db->get('attachments')->num_rows();
+    $c = config_item('doc_upload_type');
+    if ($row < count($c)) {
+        echo '<span class="label label-warning">not completed</span>';
+    } else {
+        echo '<span class="label label-success">completed</span>';
+    }
+}
+
 function voucher_status($r)
 {
     switch ($r->voucher_status) {

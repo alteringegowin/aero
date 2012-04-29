@@ -54,7 +54,7 @@
     <div class="span4">&nbsp;</div>
 
     <div class="span3">
-        <h5>Request Status :</h5>
+        <h5>Claim Status :</h5>
         <p><?php the_verification_form_status($flight) ?></p>
         <p><?php the_verification_form_link($flight) ?></p>
     </div>
