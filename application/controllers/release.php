@@ -59,9 +59,11 @@ class Release extends CI_Controller
             $this->airasia_pdf->SetMargins(0.5, 0.5);
 
             $vouchers = $this->passenger_model->get_passengers($voucher_id, 'print');
+            
             foreach ($vouchers as $r) {
                 $this->airasia_pdf->AddPage();
-                //$this->airasia_pdf->guide();
+                $this->airasia_pdf->guide();
+                
                 $this->airasia_pdf->SetFont('Times', '', 10);
                 $this->airasia_pdf->loadData($r);
                 $this->airasia_pdf->atas();

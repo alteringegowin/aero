@@ -1,4 +1,4 @@
-<h3>Passanger Data <small><a href="<?php echo site_url('ciu') ?>">back to voucher list</a></small></h3>
+<h3>Passanger Data <small><a href="<?php echo site_url('progress') ?>">back to voucher list</a></small></h3>
 <hr/>
 <div class="row">
     <div class="span1">

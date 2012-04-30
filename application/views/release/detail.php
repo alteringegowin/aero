@@ -4,7 +4,7 @@
 <div class="row">
     <div class="span4"><h3>Passanger Data</h3></div>
     <div class="span8" style="text-align: right">
-        <?php if ($flight->voucher_status == 3): ?>
+        <?php if ($flight->voucher_status > 1 ): ?>
             <a target="_blank" class="btn btn-info" href="<?php echo site_url('release/print_list/' . $flight->id) ?>"><i class="icon-list-alt icon-white"></i> Print This Page</a>
             <a data-toggle="modal" href="#myModal" class="btn btn-danger print-voucher"><i class="icon-print icon-white"></i> Print All Vouchers</a>
         <?php else: ?>

@@ -37,4 +37,31 @@ class Progress extends CI_Controller
         $this->tpl['content'] = $this->load->view('progress/index', $this->tpl, true);
         $this->load->view('body', $this->tpl);
     }
+
+    function detail($voucher_id)
+    {
+        $this->load->helper('form');
+
+        $flight = $this->voucher_model->get($voucher_id);
+        if (!$flight->voucher_status) {
+            $this->voucher_model->read_voucher($voucher_id);
+        }
+
+        $passengers = $this->passenger_model->get_passengers($voucher_id);
+        $documents = $this->voucher_model->get_attachment($voucher_id);
+        $doc_type = config_item('doc_upload_type');
+
+
+        $this->tpl['doc_type'] = $doc_type;
+        $this->tpl['documents'] = $documents;
+        $this->tpl['flight'] = $flight;
+        $this->breadcrumbs[] = anchor('flight', 'Voucher');
+        $this->breadcrumbs[] = $flight->flight_number . ' on ' . $flight->flight_date;
+
+        $this->tpl['breadcrumbs'] = $this->breadcrumbs;
+        $this->tpl['passengers'] = $passengers;
+        $this->tpl['content'] = $this->load->view('progress/detail', $this->tpl, true);
+        $this->load->view('body', $this->tpl);
+    }
+
 }

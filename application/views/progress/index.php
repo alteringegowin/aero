@@ -21,7 +21,7 @@
                     <tr style="">
                         <td style="width:15%;"><p><small><?php echo $r->voucher_created_at ?></small></td>
                         <td>
-                            <a href="<?php echo site_url('ciu/detail/' . $r->id) ?>"><?php echo $r->flight_number; ?></a>
+                            <a href="<?php echo site_url('progress/detail/' . $r->id) ?>"><?php echo $r->flight_number; ?></a>
                         </td>
                         <td style="width:15%;"><?php echo $r->departure_city ?> - <?php echo $r->arrival_city ?></td>
                         <td style="width:10%;"><p><?php echo $r->flight_date ?></p></td>
