@@ -28,6 +28,36 @@ class Voucher_Model extends CI_Model
         return $next_voucer;
     }
 
+    function generate_vouchers($type, $total, $flight_number, $voucher_id)
+    {
+        switch ($type) {
+            case 'delay':
+                $type_code = '01';
+                break;
+            case 'transfer':
+                $type_code = '02';
+                break;
+            case 'reroute':
+                $type_code = '04';
+                break;
+            default:
+            case 'cancelled':
+                $type_code = '03';
+                break;
+        }
+        $price = $this->get_default_price($type);
+        $header = $flight_number . '-' . date('ymd') . '-' . $type_code . $voucher_id;
+        for ($i = 1; $i <= $total; $i++) {
+            $dbvoucher = array();
+            $voucher_code = sprintf($header . '-' . "%04d", $i);
+            $dbvoucher['voucher_id'] = $voucher_id;
+            $dbvoucher['voucher_code'] = $voucher_code;
+            $dbvoucher['price'] = $price;
+            $dbvoucher['voucher_type'] = $type;
+            $this->db->insert('passengers', $dbvoucher);
+        }
+    }
+
     function create_voucher($type='', $total, $flight_number, $voucher_id)
     {
 

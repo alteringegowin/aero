@@ -89,11 +89,12 @@ class Voucher extends CI_Controller
             $this->db->insert('vouchers', $dbflight);
             $voucher_id = $this->db->insert_id();
 
-            $this->voucher_model->create_voucher('delay', element('total_pax_delay', $post, 0), $post['flight_number'], $voucher_id);
-            $this->voucher_model->create_voucher('transfer', element('total_pax_transfer', $post, 0), $post['flight_number'], $voucher_id);
-            $this->voucher_model->create_voucher('reroute', element('total_pax_reroute', $post, 0), $post['flight_number'], $voucher_id);
-            $this->voucher_model->create_voucher('cancelled', element('total_pax_cancel', $post, 0), $post['flight_number'], $voucher_id);
-
+            $this->voucher_model->generate_vouchers('delay', element('total_pax_delay', $post, 0), $post['flight_number'], $voucher_id);
+            $this->voucher_model->generate_vouchers('transfer', element('total_pax_transfer', $post, 0), $post['flight_number'], $voucher_id);
+            $this->voucher_model->generate_vouchers('reroute', element('total_pax_reroute', $post, 0), $post['flight_number'], $voucher_id);
+            $this->voucher_model->generate_vouchers('cancelled', element('total_pax_cancel', $post, 0), $post['flight_number'], $voucher_id);
+            
+            
             //attachments
             if ($attachments) {
                 foreach ($attachments as $k => $v) {
@@ -277,6 +278,12 @@ class Voucher extends CI_Controller
 
         $data = implode("\n", $str);
         force_download('VOUCHER.CSV', $data);
+    }
+
+    function test_create_voucher()
+    {
+        $flight_number = 'AA';
+        $this->voucher_model->generate_vouchers($flight_number);
     }
 
 }
