@@ -12,7 +12,6 @@ $config['doc_upload_type'][2] = 'manifest';
 $config['doc_upload_type'][3] = 'movement';
 $config['doc_upload_type'][0] = 'kronologis';
 $config['doc_upload_type'][4] = 'tanda bukti';
-$config['doc_upload_type'][5] = 'others';
 
 
 $config['doc_upload_type_icon'][0] = 'check';
