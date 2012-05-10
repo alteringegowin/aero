@@ -49,7 +49,7 @@ class Other_pdf extends FPDF
         $this->SetX($x);
 
         $this->cell($this->width * 8, $this->height, 'Code Voucher', 0, 1, 'R');
-        
+
         $this->SetX($x);
         $this->SetFont('Times', 'B', 11);
         $this->cell($this->width * 8, $this->height, $this->dbdata->voucher_code, 0, 1, 'R');
@@ -109,7 +109,8 @@ class Other_pdf extends FPDF
         //$this->SetY($y);
         //$this->SetX($x);
 
-        $this->Image('themes/bootstrap/img/' . $this->logo, $x, $y, $this->width * 2);
+        $this->Image('themes/bootstrap/img/' . $this->logo, $x, $y-0.4, $this->width * 2);
+        $this->Image('themes/bootstrap/img/mandiri_bw.jpg', $x, $y+0.6, $this->width);
     }
 
 }
