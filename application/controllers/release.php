@@ -51,7 +51,6 @@ class Release extends CI_Controller
         $this->voucher_model->set_print_voucher($voucher_id);
 
 
-
         if ($this->airlines_id == 3) {
 
             $this->load->library('Airasia_pdf');
@@ -136,7 +135,7 @@ class Release extends CI_Controller
             }
             //
             //$this->other_pdf->guide();
-            $this->other_pdf->SetFont('Times', '', 10);
+            $this->other_pdf->SetFont('Times', '', 11);
             $this->other_pdf->loadData($r);
             $this->other_pdf->atas();
             $this->other_pdf->data();
