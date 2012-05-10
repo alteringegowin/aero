@@ -1,6 +1,7 @@
 <div class="row">
     <div class="span12">
         <h3>Flight Data Order By Flight Date</h3>
+        <div class="alert alert-info">this page will auto refresh on <strong><span class="countdown">300</span> seconds</strong></div>
         <hr/>
         <table class="table table-striped table-bordered table-condensed">
             <thead>
@@ -41,3 +42,15 @@
 
 </div>
 
+<script type="text/javascript">
+    $(function(){
+        var count = 5*60;
+        countdown = setInterval(function(){
+            $("span.countdown").html(count);
+            if (count == 0) {
+                window.location = '<?php echo current_url()?>';
+            }
+            count--;
+        }, 1000);
+    });
+</script>
